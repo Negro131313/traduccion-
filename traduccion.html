@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Práctica de Traducción Español-Inglés</title>
+    <script src="traduc.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ffcc00;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .phrase-container {
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .spanish-phrase {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ffcc00;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .english-phrase {
+            font-size: 2rem;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            color: #4dffb8;
+            font-style: italic;
+            margin-top: 15px;
+        }
+        
+        .english-phrase.show {
+            opacity: 1;
+        }
+        
+        .input-container {
+            width: 100%;
+            margin: 30px 0;
+        }
+        
+        #translation-input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.8rem;
+            text-align: center;
+            border: 3px solid #ff6b6b;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        #translation-input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 5px rgba(76, 175, 80, 0.3);
+            transform: scale(1.02);
+        }
+        
+        #translation-input::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff6b6b, #ffcc00);
+            transition: width 0.3s ease;
+        }
+        
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .timer-circle {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+        
+        .timer-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 8;
+        }
+        
+        .timer-progress {
+            fill: none;
+            stroke: #ffcc00;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+        
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .feedback {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            height: 80px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feedback.correct {
+            color: #4CAF50;
+            opacity: 1;
+            text-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+        }
+        
+        .feedback.incorrect {
+            color: #f44336;
+            opacity: 1;
+            text-shadow: 0 0 20px rgba(244, 67, 54, 0.8);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+        
+        .instructions {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .decoration {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: 1;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .decoration:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .decoration:nth-child(2) {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+        
+        .decoration:nth-child(3) {
+            top: 20%;
+            right: 20%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 6s;
+        }
+        
+        .decoration:nth-child(4) {
+            bottom: 20%;
+            left: 20%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 9s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, 10px) rotate(2deg); }
+            50% { transform: translate(-10px, 5px) rotate(-2deg); }
+            75% { transform: translate(5px, -10px) rotate(1deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .spanish-phrase {
+                font-size: 2rem;
+            }
+            
+            .english-phrase {
+                font-size: 1.6rem;
+            }
+            
+            #translation-input {
+                font-size: 1.4rem;
+                padding: 15px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .feedback {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+    
+    <div class="container">
+        <h1>Práctica de Traducción</h1>
+        <div class="subtitle">Español → Inglés</div>
+        
+        <div class="phrase-container">
+            <div class="spanish-phrase" id="spanish-phrase"></div>
+            <div class="english-phrase" id="english-phrase"></div>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="input-container">
+            <input type="text" id="translation-input" 
+                   placeholder="Escribe la traducción en inglés aquí..." 
+                   autocomplete="off">
+            <div class="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+        </div>
+        
+        <div class="timer-container">
+            <div class="timer-circle">
+                <svg viewBox="0 0 100 100">
+                    <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                    <circle class="timer-progress" cx="50" cy="50" r="45" 
+                            stroke-dasharray="283" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="timer-text" id="timer-text">15</div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <span class="stat-label">Frases Completadas</span>
+                <span class="stat-value" id="completed-count">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Precisión</span>
+                <span class="stat-value" id="accuracy">100%</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Tiempo Restante</span>
+                <span class="stat-value" id="next-phrase-timer">15s</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <p>Escribe la traducción en inglés de la frase en español mostrada arriba.</p>
+            <p>La solución en inglés aparecerá después de 7 segundos si no la has completado.</p>
+        </div>
+    </div>
+
+    <script>
+        // Referencias a elementos del DOM
+        const spanishPhraseEl = document.getElementById('spanish-phrase');
+        const englishPhraseEl = document.getElementById('english-phrase');
+        const inputEl = document.getElementById('translation-input');
+        const feedbackEl = document.getElementById('feedback');
+        const progressBarEl = document.getElementById('progress-bar');
+        const timerTextEl = document.getElementById('timer-text');
+        const timerProgressEl = document.querySelector('.timer-progress');
+        const completedCountEl = document.getElementById('completed-count');
+        const accuracyEl = document.getElementById('accuracy');
+        const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
+        
+        // Variables de estado
+        let currentPhrase = null;
+        let currentIndex = 0;
+        let timerInterval;
+        let showEnglishTimeout;
+        let completedCount = 0;
+        let correctCount = 0;
+        let timeLeft = 15;
+        
+        // Inicializar la aplicación
+        function init() {
+            // Asegurarse de que las frases están disponibles
+            if (!window.frasesApp || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
+                console.error("Error: No se encontraron frases. Verifica el archivo traduc.js");
+                spanishPhraseEl.textContent = "Error: No se cargaron las frases";
+                return;
+            }
+            
+            loadNextPhrase();
+            inputEl.focus();
+            
+            // Iniciar temporizador
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            // Actualizar estadísticas
+            updateStats();
+        }
+        
+        // Cargar la siguiente frase
+        function loadNextPhrase() {
+            // Resetear estado
+            clearTimeout(showEnglishTimeout);
+            englishPhraseEl.classList.remove('show');
+            feedbackEl.className = 'feedback';
+            inputEl.value = '';
+            inputEl.style.backgroundColor = '';
+            inputEl.style.borderColor = '#ff6b6b';
+            progressBarEl.style.width = '0%';
+            timeLeft = 15;
+            timerTextEl.textContent = timeLeft;
+            timerProgressEl.style.strokeDashoffset = '0';
+            
+            // Seleccionar frase aleatoria
+            const phrases = window.frasesApp.phrases;
+            currentIndex = Math.floor(Math.random() * phrases.length);
+            currentPhrase = phrases[currentIndex];
+            
+            // Mostrar frase en español
+            spanishPhraseEl.textContent = currentPhrase.spanish;
+            
+            // Configurar texto en inglés (oculto)
+            englishPhraseEl.textContent = currentPhrase.english;
+            
+            // Programar para mostrar la traducción después de 7 segundos
+            showEnglishTimeout = setTimeout(() => {
+                englishPhraseEl.classList.add('show');
+            }, 7000);
+        }
+        
+        // Actualizar temporizador
+        function updateTimer() {
+            timeLeft--;
+            timerTextEl.textContent = timeLeft;
+            nextPhraseTimerEl.textContent = `${timeLeft}s`;
+            
+            // Actualizar círculo de progreso (283 es la circunferencia para r=45)
+            const offset = 283 - (283 * (15 - timeLeft) / 15);
+            timerProgressEl.style.strokeDashoffset = offset;
+            
+            if (timeLeft <= 0) {
+                // Pasar a la siguiente frase
+                completedCount++;
+                updateStats();
+                loadNextPhrase();
+            }
+        }
+        
+        // Actualizar estadísticas
+        function updateStats() {
+            completedCountEl.textContent = completedCount;
+            const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
+            accuracyEl.textContent = `${accuracy}%`;
+        }
+        
+        // Manejar entrada del usuario
+        inputEl.addEventListener('input', function() {
+            const userInput = this.value;
+            
+            // Actualizar barra de progreso
+            const progress = (userInput.length / currentPhrase.english.length) * 100;
+            progressBarEl.style.width = `${Math.min(progress, 100)}%`;
+            
+            // Normalizar entradas para comparación (ignorar comas y signos de puntuación)
+            const normalizedInput = userInput.trim().replace(/,/g, '').replace(/[\?!.]+$/, '').toLowerCase();
+            const normalizedPhrase = currentPhrase.english.trim().replace(/,/g, '').replace(/[\?!.]+$/, '').toLowerCase();
+            
+            // Verificar si la respuesta es correcta
+            if (normalizedInput === normalizedPhrase) {
+                // Respuesta correcta
+                this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
+                this.style.borderColor = '#4CAF50';
+                feedbackEl.textContent = '¡Correcto!';
+                feedbackEl.className = 'feedback correct';
+                progressBarEl.style.background = '#4CAF50';
+                
+                // Actualizar estadísticas
+                completedCount++;
+                correctCount++;
+                updateStats();
+                
+                // Pasar a la siguiente frase después de un breve retraso
+                setTimeout(() => {
+                    loadNextPhrase();
+                }, 1500);
+            } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
+                // Respuesta parcialmente correcta
+                this.style.borderColor = '#ffcc00';
+                progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
+            } else if (userInput !== '') {
+                // Respuesta incorrecta
+                this.style.borderColor = '#f44336';
+                progressBarEl.style.background = '#f44336';
+            } else {
+                // Sin entrada
+                this.style.borderColor = '#ff6b6b';
+                progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
+            }
+        });
+        
+        // Inicializar la aplicación cuando se carga la página
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
