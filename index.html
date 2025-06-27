@@ -355,149 +355,154 @@
     </div>
 
     <script>
-        // Referencias a elementos del DOM
-        const spanishPhraseEl = document.getElementById('spanish-phrase');
-        const englishPhraseEl = document.getElementById('english-phrase');
-        const inputEl = document.getElementById('translation-input');
-        const feedbackEl = document.getElementById('feedback');
-        const progressBarEl = document.getElementById('progress-bar');
-        const timerTextEl = document.getElementById('timer-text');
-        const timerProgressEl = document.querySelector('.timer-progress');
-        const completedCountEl = document.getElementById('completed-count');
-        const accuracyEl = document.getElementById('accuracy');
-        const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
-        
-        // Variables de estado
-        let currentPhrase = null;
-        let currentIndex = 0;
-        let timerInterval;
-        let showEnglishTimeout;
-        let completedCount = 0;
-        let correctCount = 0;
-        let timeLeft = 15;
-        
-        // Inicializar la aplicación
-        function init() {
-            // Asegurarse de que las frases están disponibles
-            if (!window.frasesApp || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
-                console.error("Error: No se encontraron frases. Verifica el archivo traduc.js");
-                spanishPhraseEl.textContent = "Error: No se cargaron las frases";
-                return;
-            }
-            
-            loadNextPhrase();
-            inputEl.focus();
-            
-            // Iniciar temporizador
-            timerInterval = setInterval(updateTimer, 1000);
-            
-            // Actualizar estadísticas
+    const spanishPhraseEl = document.getElementById('spanish-phrase');
+    const englishPhraseEl = document.getElementById('english-phrase');
+    const inputEl = document.getElementById('translation-input');
+    const feedbackEl = document.getElementById('feedback');
+    const progressBarEl = document.getElementById('progress-bar');
+    const timerTextEl = document.getElementById('timer-text');
+    const timerProgressEl = document.querySelector('.timer-progress');
+    const completedCountEl = document.getElementById('completed-count');
+    const accuracyEl = document.getElementById('accuracy');
+    const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
+
+    let currentPhrase = null;
+    let timerInterval;
+    let showEnglishTimeout;
+    let completedCount = 0;
+    let correctCount = 0;
+    let timeLeft = 15;
+
+    // Obtener progreso guardado del navegador
+    function getCompletedSet() {
+        const saved = localStorage.getItem('completedPhrases');
+        return saved ? new Set(JSON.parse(saved)) : new Set();
+    }
+
+    // Guardar progreso
+    function saveCompletedSet(set) {
+        localStorage.setItem('completedPhrases', JSON.stringify(Array.from(set)));
+    }
+
+    const completedSet = getCompletedSet();
+
+    function init() {
+        if (!window.frasesApp || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
+            console.error("Error: No se encontraron frases.");
+            spanishPhraseEl.textContent = "Error al cargar las frases.";
+            return;
+        }
+
+        completedCount = completedSet.size;
+        correctCount = completedSet.size;
+
+        loadNextPhrase();
+        inputEl.focus();
+        timerInterval = setInterval(updateTimer, 1000);
+        updateStats();
+    }
+
+    function loadNextPhrase() {
+        clearTimeout(showEnglishTimeout);
+        englishPhraseEl.classList.remove('show');
+        feedbackEl.className = 'feedback';
+        inputEl.value = '';
+        inputEl.style.backgroundColor = '';
+        inputEl.style.borderColor = '#ff6b6b';
+        progressBarEl.style.width = '0%';
+        timeLeft = 15;
+        timerTextEl.textContent = timeLeft;
+        timerProgressEl.style.strokeDashoffset = '0';
+
+        const available = window.frasesApp.phrases.filter(p => !completedSet.has(p.spanish));
+
+        if (available.length === 0) {
+            spanishPhraseEl.textContent = "¡Has completado todas las frases!";
+            englishPhraseEl.textContent = "";
+            inputEl.disabled = true;
+            return;
+        }
+
+        currentPhrase = available[Math.floor(Math.random() * available.length)];
+        spanishPhraseEl.textContent = currentPhrase.spanish;
+        englishPhraseEl.textContent = currentPhrase.english;
+
+        showEnglishTimeout = setTimeout(() => {
+            englishPhraseEl.classList.add('show');
+        }, 7000);
+    }
+
+    function updateTimer() {
+        timeLeft--;
+        timerTextEl.textContent = timeLeft;
+        nextPhraseTimerEl.textContent = `${timeLeft}s`;
+        const offset = 283 - (283 * (15 - timeLeft) / 15);
+        timerProgressEl.style.strokeDashoffset = offset;
+
+        if (timeLeft <= 0) {
+            completedCount++;
             updateStats();
+            loadNextPhrase();
         }
-        
-        // Cargar la siguiente frase
-        function loadNextPhrase() {
-            // Resetear estado
-            clearTimeout(showEnglishTimeout);
-            englishPhraseEl.classList.remove('show');
-            feedbackEl.className = 'feedback';
-            inputEl.value = '';
-            inputEl.style.backgroundColor = '';
-            inputEl.style.borderColor = '#ff6b6b';
-            progressBarEl.style.width = '0%';
-            timeLeft = 15;
-            timerTextEl.textContent = timeLeft;
-            timerProgressEl.style.strokeDashoffset = '0';
-            
-            // Seleccionar frase aleatoria
-            const phrases = window.frasesApp.phrases;
-            currentIndex = Math.floor(Math.random() * phrases.length);
-            currentPhrase = phrases[currentIndex];
-            
-            // Mostrar frase en español
-            spanishPhraseEl.textContent = currentPhrase.spanish;
-            
-            // Configurar texto en inglés (oculto)
-            englishPhraseEl.textContent = currentPhrase.english;
-            
-            // Programar para mostrar la traducción después de 7 segundos
-            showEnglishTimeout = setTimeout(() => {
-                englishPhraseEl.classList.add('show');
-            }, 7000);
-        }
-        
-        // Actualizar temporizador
-        function updateTimer() {
-            timeLeft--;
-            timerTextEl.textContent = timeLeft;
-            nextPhraseTimerEl.textContent = `${timeLeft}s`;
-            
-            // Actualizar círculo de progreso (283 es la circunferencia para r=45)
-            const offset = 283 - (283 * (15 - timeLeft) / 15);
-            timerProgressEl.style.strokeDashoffset = offset;
-            
-            if (timeLeft <= 0) {
-                // Pasar a la siguiente frase
-                completedCount++;
-                updateStats();
-                loadNextPhrase();
-            }
-        }
-        
-        // Actualizar estadísticas
-        function updateStats() {
-            completedCountEl.textContent = completedCount;
-            const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
-            accuracyEl.textContent = `${accuracy}%`;
-        }
-        
-        // Manejar entrada del usuario
-        inputEl.addEventListener('input', function() {
-            const userInput = this.value;
-            
-            // Actualizar barra de progreso
-            const progress = (userInput.length / currentPhrase.english.length) * 100;
-            progressBarEl.style.width = `${Math.min(progress, 100)}%`;
-            
-            // Normalizar entradas para comparación (ignorar comas y signos de puntuación)
-            const normalizedInput = userInput.trim().replace(/,/g, '').replace(/[\?!.]+$/, '').toLowerCase();
-            const normalizedPhrase = currentPhrase.english.trim().replace(/,/g, '').replace(/[\?!.]+$/, '').toLowerCase();
-            
-            // Verificar si la respuesta es correcta
-            if (normalizedInput === normalizedPhrase) {
-                // Respuesta correcta
-                this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
-                this.style.borderColor = '#4CAF50';
-                feedbackEl.textContent = '¡Correcto!';
-                feedbackEl.className = 'feedback correct';
-                progressBarEl.style.background = '#4CAF50';
-                
-                // Actualizar estadísticas
+    }
+
+    function updateStats() {
+        completedCountEl.textContent = completedCount;
+        const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
+        accuracyEl.textContent = `${accuracy}%`;
+    }
+
+    inputEl.addEventListener('input', function () {
+        const userInput = this.value;
+        const progress = (userInput.length / currentPhrase.english.length) * 100;
+        progressBarEl.style.width = `${Math.min(progress, 100)}%`;
+
+
+const normalizedInput = normalize(userInput);
+const normalizedPhrase = normalize(currentPhrase.english);
+
+        if (normalizedInput === normalizedPhrase) {
+            this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
+            this.style.borderColor = '#4CAF50';
+            feedbackEl.textContent = '¡Correcto!';
+            feedbackEl.className = 'feedback correct';
+            progressBarEl.style.background = '#4CAF50';
+
+            if (!completedSet.has(currentPhrase.spanish)) {
+                completedSet.add(currentPhrase.spanish);
+                saveCompletedSet(completedSet);
                 completedCount++;
                 correctCount++;
-                updateStats();
-                
-                // Pasar a la siguiente frase después de un breve retraso
-                setTimeout(() => {
-                    loadNextPhrase();
-                }, 1600);
-            } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
-                // Respuesta parcialmente correcta
-                this.style.borderColor = '#ffcc00';
-                progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
-            } else if (userInput !== '') {
-                // Respuesta incorrecta
-                this.style.borderColor = '#f44336';
-                progressBarEl.style.background = '#f44336';
-            } else {
-                // Sin entrada
-                this.style.borderColor = '#ff6b6b';
-                progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
             }
-        });
-        
-        // Inicializar la aplicación cuando se carga la página
-        window.addEventListener('DOMContentLoaded', init);
-    </script>
+
+            updateStats();
+
+            setTimeout(() => {
+                loadNextPhrase();
+            }, 1600);
+        } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
+            this.style.borderColor = '#ffcc00';
+            progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
+        } else if (userInput !== '') {
+            this.style.borderColor = '#f44336';
+            progressBarEl.style.background = '#f44336';
+        } else {
+            this.style.borderColor = '#ff6b6b';
+            progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', init);
+
+    function normalize(text) {
+    return text
+        .toLowerCase()
+        .replace(/[\.,!?]/g, '') // Elimina signos de puntuación
+        .replace(/\s+/g, ' ')    // Normaliza espacios múltiples
+        .replace(/takeoff/g, 'take off') // Equivale takeoff y take off
+        .replace(/take off/g, 'takeoff') // También al revés (opcional)
+        .trim();
+}
+</script>
 </body>
 </html>
