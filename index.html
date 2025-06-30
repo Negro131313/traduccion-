@@ -344,7 +344,7 @@
             </div>
             <div class="stat-box">
                 <span class="stat-label">Tiempo Restante</span>
-                <span class="stat-value" id="next-phrase-timer">15s</span>
+                <span class="stat-value" id="next-phrase-timer">16s</span>
             </div>
         </div>
         
@@ -353,156 +353,155 @@
             <p>La solución en inglés aparecerá después de 7 segundos si no la has completado.</p>
         </div>
     </div>
+     
+     <script>
+const spanishPhraseEl = document.getElementById('spanish-phrase');
+const englishPhraseEl = document.getElementById('english-phrase');
+const inputEl = document.getElementById('translation-input');
+const feedbackEl = document.getElementById('feedback');
+const progressBarEl = document.getElementById('progress-bar');
+const timerTextEl = document.getElementById('timer-text');
+const timerProgressEl = document.querySelector('.timer-progress');
+const completedCountEl = document.getElementById('completed-count');
+const accuracyEl = document.getElementById('accuracy');
+const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
 
-    <script>
-    const spanishPhraseEl = document.getElementById('spanish-phrase');
-    const englishPhraseEl = document.getElementById('english-phrase');
-    const inputEl = document.getElementById('translation-input');
-    const feedbackEl = document.getElementById('feedback');
-    const progressBarEl = document.getElementById('progress-bar');
-    const timerTextEl = document.getElementById('timer-text');
-    const timerProgressEl = document.querySelector('.timer-progress');
-    const completedCountEl = document.getElementById('completed-count');
-    const accuracyEl = document.getElementById('accuracy');
-    const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
+let currentPhrase = null;
+let timerInterval;
+let showEnglishTimeout;
+let completedCount = 0;
+let correctCount = 0;
+let timeLeft = 16; // Ahora es 16
 
-    let currentPhrase = null;
-    let timerInterval;
-    let showEnglishTimeout;
-    let completedCount = 0;
-    let correctCount = 0;
-    let timeLeft = 15;
+function getCompletedSet() {
+    const saved = localStorage.getItem('completedPhrases');
+    return saved ? new Set(JSON.parse(saved)) : new Set();
+}
 
-    // Obtener progreso guardado del navegador
-    function getCompletedSet() {
-        const saved = localStorage.getItem('completedPhrases');
-        return saved ? new Set(JSON.parse(saved)) : new Set();
+function saveCompletedSet(set) {
+    localStorage.setItem('completedPhrases', JSON.stringify(Array.from(set)));
+}
+
+const completedSet = getCompletedSet();
+
+function init() {
+    if (!window.frasesApp || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
+        console.error("Error: No se encontraron frases.");
+        spanishPhraseEl.textContent = "Error al cargar las frases.";
+        return;
     }
 
-    // Guardar progreso
-    function saveCompletedSet(set) {
-        localStorage.setItem('completedPhrases', JSON.stringify(Array.from(set)));
+    completedCount = completedSet.size;
+    correctCount = completedSet.size;
+
+    loadNextPhrase();
+    inputEl.focus();
+    timerInterval = setInterval(updateTimer, 1000);
+    updateStats();
+}
+
+function loadNextPhrase() {
+    clearTimeout(showEnglishTimeout);
+    englishPhraseEl.classList.remove('show');
+    feedbackEl.className = 'feedback';
+    inputEl.value = '';
+    inputEl.style.backgroundColor = '';
+    inputEl.style.borderColor = '#ff6b6b';
+    progressBarEl.style.width = '0%';
+    timeLeft = 16; // también aquí
+    timerTextEl.textContent = timeLeft;
+    timerProgressEl.style.strokeDashoffset = '0';
+
+    const available = window.frasesApp.phrases.filter(p => !completedSet.has(p.spanish));
+
+    if (available.length === 0) {
+        spanishPhraseEl.textContent = "¡Has completado todas las frases!";
+        englishPhraseEl.textContent = "";
+        inputEl.disabled = true;
+        return;
     }
 
-    const completedSet = getCompletedSet();
+    currentPhrase = available[Math.floor(Math.random() * available.length)];
+    spanishPhraseEl.textContent = currentPhrase.spanish;
+    englishPhraseEl.textContent = currentPhrase.english;
 
-    function init() {
-        if (!window.frasesApp || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
-            console.error("Error: No se encontraron frases.");
-            spanishPhraseEl.textContent = "Error al cargar las frases.";
-            return;
-        }
+    showEnglishTimeout = setTimeout(() => {
+        englishPhraseEl.classList.add('show');
+    }, 7000);
+}
 
-        completedCount = completedSet.size;
-        correctCount = completedSet.size;
+function updateTimer() {
+    timeLeft--;
+    timerTextEl.textContent = timeLeft;
+    nextPhraseTimerEl.textContent = `${timeLeft}s`;
 
-        loadNextPhrase();
-        inputEl.focus();
-        timerInterval = setInterval(updateTimer, 1000);
+    const offset = 283 - (283 * (16 - timeLeft) / 16); // actualizado a 16
+    timerProgressEl.style.strokeDashoffset = offset;
+
+    if (timeLeft <= 0) {
+        completedCount++;
         updateStats();
+        loadNextPhrase();
     }
+}
 
-    function loadNextPhrase() {
-        clearTimeout(showEnglishTimeout);
-        englishPhraseEl.classList.remove('show');
-        feedbackEl.className = 'feedback';
-        inputEl.value = '';
-        inputEl.style.backgroundColor = '';
-        inputEl.style.borderColor = '#ff6b6b';
-        progressBarEl.style.width = '0%';
-        timeLeft = 15;
-        timerTextEl.textContent = timeLeft;
-        timerProgressEl.style.strokeDashoffset = '0';
+function updateStats() {
+    completedCountEl.textContent = completedCount;
+    const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
+    accuracyEl.textContent = `${accuracy}%`;
+}
 
-        const available = window.frasesApp.phrases.filter(p => !completedSet.has(p.spanish));
+inputEl.addEventListener('input', function () {
+    const userInput = this.value;
+    const progress = (userInput.length / currentPhrase.english.length) * 100;
+    progressBarEl.style.width = `${Math.min(progress, 100)}%`;
 
-        if (available.length === 0) {
-            spanishPhraseEl.textContent = "¡Has completado todas las frases!";
-            englishPhraseEl.textContent = "";
-            inputEl.disabled = true;
-            return;
-        }
+    const normalizedInput = normalize(userInput);
+    const normalizedPhrase = normalize(currentPhrase.english);
 
-        currentPhrase = available[Math.floor(Math.random() * available.length)];
-        spanishPhraseEl.textContent = currentPhrase.spanish;
-        englishPhraseEl.textContent = currentPhrase.english;
+    if (normalizedInput === normalizedPhrase) {
+        this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
+        this.style.borderColor = '#4CAF50';
+        feedbackEl.textContent = '¡Correcto!';
+        feedbackEl.className = 'feedback correct';
+        progressBarEl.style.background = '#4CAF50';
 
-        showEnglishTimeout = setTimeout(() => {
-            englishPhraseEl.classList.add('show');
-        }, 7000);
-    }
-
-    function updateTimer() {
-        timeLeft--;
-        timerTextEl.textContent = timeLeft;
-        nextPhraseTimerEl.textContent = `${timeLeft}s`;
-        const offset = 283 - (283 * (15 - timeLeft) / 15);
-        timerProgressEl.style.strokeDashoffset = offset;
-
-        if (timeLeft <= 0) {
+        if (!completedSet.has(currentPhrase.spanish)) {
+            completedSet.add(currentPhrase.spanish);
+            saveCompletedSet(completedSet);
             completedCount++;
-            updateStats();
+            correctCount++;
+        }
+
+        updateStats();
+
+        setTimeout(() => {
             loadNextPhrase();
-        }
+        }, 1600);
+    } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
+        this.style.borderColor = '#ffcc00';
+        progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
+    } else if (userInput !== '') {
+        this.style.borderColor = '#f44336';
+        progressBarEl.style.background = '#f44336';
+    } else {
+        this.style.borderColor = '#ff6b6b';
+        progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
     }
+});
 
-    function updateStats() {
-        completedCountEl.textContent = completedCount;
-        const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
-        accuracyEl.textContent = `${accuracy}%`;
-    }
+window.addEventListener('DOMContentLoaded', init);
 
-    inputEl.addEventListener('input', function () {
-        const userInput = this.value;
-        const progress = (userInput.length / currentPhrase.english.length) * 100;
-        progressBarEl.style.width = `${Math.min(progress, 100)}%`;
-
-
-const normalizedInput = normalize(userInput);
-const normalizedPhrase = normalize(currentPhrase.english);
-
-        if (normalizedInput === normalizedPhrase) {
-            this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
-            this.style.borderColor = '#4CAF50';
-            feedbackEl.textContent = '¡Correcto!';
-            feedbackEl.className = 'feedback correct';
-            progressBarEl.style.background = '#4CAF50';
-
-            if (!completedSet.has(currentPhrase.spanish)) {
-                completedSet.add(currentPhrase.spanish);
-                saveCompletedSet(completedSet);
-                completedCount++;
-                correctCount++;
-            }
-
-            updateStats();
-
-            setTimeout(() => {
-                loadNextPhrase();
-            }, 1600);
-        } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
-            this.style.borderColor = '#ffcc00';
-            progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
-        } else if (userInput !== '') {
-            this.style.borderColor = '#f44336';
-            progressBarEl.style.background = '#f44336';
-        } else {
-            this.style.borderColor = '#ff6b6b';
-            progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
-        }
-    });
-
-    window.addEventListener('DOMContentLoaded', init);
-
-    function normalize(text) {
+function normalize(text) {
     return text
         .toLowerCase()
-        .replace(/[\.,!?]/g, '') // Elimina signos de puntuación
-        .replace(/\s+/g, ' ')    // Normaliza espacios múltiples
-        .replace(/takeoff/g, 'take off') // Equivale takeoff y take off
-        .replace(/take off/g, 'takeoff') // También al revés (opcional)
+        .replace(/[\.,!?]/g, '')
+        .replace(/\s+/g, ' ')
+        .replace(/takeoff/g, 'take off')
+        .replace(/take off/g, 'takeoff')
         .trim();
 }
-</script>
+</script> 
+    
 </body>
 </html>
