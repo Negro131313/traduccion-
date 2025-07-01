@@ -210,7 +210,7 @@ window.frasesApp = {
 { english: "Burn the midnight oil.", spanish: "Quemarse las pestañas." },
 
 { english: "Throw in the towel.", spanish: "Tirar la toalla." },
-{ english: "Under the weather.", spanish: "Estar indispuesto." },
+
 { english: "Hit the snooze button.", spanish: "Posponer la alarma." },
 { english: "Start the day on the right foot.", spanish: "Empezar el día con buen pie." },
 { english: "Miss the bus.", spanish: "Perder el autobús." },
@@ -248,7 +248,6 @@ window.frasesApp = {
 { english: "Wear many hats.", spanish: "Asumir múltiples roles." },
 { english: "Pull someone's leg.", spanish: "Tomarle el pelo a alguien." },  
 { english: "Turn a blind eye.", spanish: "Hacer la vista gorda." },  
-{ english: "Under the weather.", spanish: "Sentirse indispuesto." },  
 { english: "It was the best of times, it was the worst of times.", spanish: "Era el mejor de los tiempos, era el peor de los tiempos." },  
 { english: "To be or not to be, that is the question.", spanish: "Ser o no ser, esa es la cuestión." },  
 { english: "All animals are equal, but some are more equal than others.", spanish: "Todos los animales son iguales, pero algunos son más iguales que otros." },  
