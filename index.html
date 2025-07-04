@@ -344,7 +344,7 @@
             </div>
             <div class="stat-box">
                 <span class="stat-label">Tiempo Restante</span>
-                <span class="stat-value" id="next-phrase-timer">16s</span>
+                <span class="stat-value" id="next-phrase-timer">17s</span>
             </div>
         </div>
         
@@ -371,7 +371,7 @@ let timerInterval;
 let showEnglishTimeout;
 let completedCount = 0;
 let correctCount = 0;
-let timeLeft = 16; // Ahora es 16
+let timeLeft = 17; // Ahora es 17
 
 function getCompletedSet() {
     const saved = localStorage.getItem('completedPhrases');
@@ -408,7 +408,7 @@ function loadNextPhrase() {
     inputEl.style.backgroundColor = '';
     inputEl.style.borderColor = '#ff6b6b';
     progressBarEl.style.width = '0%';
-    timeLeft = 16; // también aquí
+    timeLeft = 17; // también aquí
     timerTextEl.textContent = timeLeft;
     timerProgressEl.style.strokeDashoffset = '0';
 
@@ -435,7 +435,7 @@ function updateTimer() {
     timerTextEl.textContent = timeLeft;
     nextPhraseTimerEl.textContent = `${timeLeft}s`;
 
-    const offset = 283 - (283 * (16 - timeLeft) / 16); // actualizado a 16
+    const offset = 283 - (283 * (17 - timeLeft) / 17); // actualizado a 17
     timerProgressEl.style.strokeDashoffset = offset;
 
     if (timeLeft <= 0) {
@@ -477,7 +477,7 @@ inputEl.addEventListener('input', function () {
 
         setTimeout(() => {
             loadNextPhrase();
-        }, 1600);
+        }, 1700);
     } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
         this.style.borderColor = '#ffcc00';
         progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
