@@ -371,8 +371,7 @@ let timerInterval;
 let showEnglishTimeout;
 let completedCount = 0;
 let correctCount = 0;
-let timeLeft = 19; // Ahora es 19
-
+let timeLeft = 20; // Ahora es 20
 function getCompletedSet() {
     const saved = localStorage.getItem('completedPhrases');
     return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -408,7 +407,7 @@ function loadNextPhrase() {
     inputEl.style.backgroundColor = '';
     inputEl.style.borderColor = '#ff6b6b';
     progressBarEl.style.width = '0%';
-    timeLeft = 19; // también aquí
+    timeLeft = 20; // también aquí
     timerTextEl.textContent = timeLeft;
     timerProgressEl.style.strokeDashoffset = '0';
 
@@ -435,7 +434,7 @@ function updateTimer() {
     timerTextEl.textContent = timeLeft;
     nextPhraseTimerEl.textContent = `${timeLeft}s`;
 
-    const offset = 283 - (283 * (19 - timeLeft) / 19); // actualizado a 19
+    const offset = 283 - (283 * (20 - timeLeft) / 20); // actualizado a 20
     timerProgressEl.style.strokeDashoffset = offset;
 
     if (timeLeft <= 0) {
