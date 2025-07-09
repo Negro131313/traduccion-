@@ -5,6 +5,7 @@
     <title>Práctica de Traducción Español-Inglés</title>
     <script src="traduc.js"></script>
     <style>
+        /* Your CSS styles here */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -344,7 +345,7 @@
             </div>
             <div class="stat-box">
                 <span class="stat-label">Tiempo Restante</span>
-                <span class="stat-value" id="next-phrase-timer">18s</span>
+                <span class="stat-value" id="next-phrase-timer">21s</span>
             </div>
         </div>
         
@@ -353,159 +354,190 @@
             <p>La solución en inglés aparecerá después de 7 segundos si no la has completado.</p>
         </div>
     </div>
-     
-     <script>
-const spanishPhraseEl = document.getElementById('spanish-phrase');
-const englishPhraseEl = document.getElementById('english-phrase');
-const inputEl = document.getElementById('translation-input');
-const feedbackEl = document.getElementById('feedback');
-const progressBarEl = document.getElementById('progress-bar');
-const timerTextEl = document.getElementById('timer-text');
-const timerProgressEl = document.querySelector('.timer-progress');
-const completedCountEl = document.getElementById('completed-count');
-const accuracyEl = document.getElementById('accuracy');
-const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
+    
+    <script>
+        const spanishPhraseEl = document.getElementById('spanish-phrase');
+        const englishPhraseEl = document.getElementById('english-phrase');
+        const inputEl = document.getElementById('translation-input');
+        const feedbackEl = document.getElementById('feedback');
+        const progressBarEl = document.getElementById('progress-bar');
+        const timerTextEl = document.getElementById('timer-text');
+        const timerProgressEl = document.querySelector('.timer-progress');
+        const completedCountEl = document.getElementById('completed-count');
+        const accuracyEl = document.getElementById('accuracy');
+        const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
 
-let currentPhrase = null;
-let timerInterval;
-let showEnglishTimeout;
-let completedCount = 0;
-let correctCount = 0;
-let timeLeft = 21; // Ahora es 21
-function getCompletedSet() {
-    const saved = localStorage.getItem('completedPhrases');
-    return saved ? new Set(JSON.parse(saved)) : new Set();
-}
+        let currentPhrase = null;
+        let timerInterval;
+        let showEnglishTimeout;
+        let completedCount = 0;
+        let correctCount = 0;
+        let timeLeft = 21; // Tiempo inicial en segundos
 
-function saveCompletedSet(set) {
-    localStorage.setItem('completedPhrases', JSON.stringify(Array.from(set)));
-}
-
-const completedSet = getCompletedSet();
-
-function init() {
-    if (!window.frasesApp || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
-        console.error("Error: No se encontraron frases.");
-        spanishPhraseEl.textContent = "Error al cargar las frases.";
-        return;
-    }
-
-    completedCount = completedSet.size;
-    correctCount = completedSet.size;
-
-    loadNextPhrase();
-    inputEl.focus();
-    timerInterval = setInterval(updateTimer, 1000);
-    updateStats();
-}
-
-function loadNextPhrase() {
-    clearTimeout(showEnglishTimeout);
-    englishPhraseEl.classList.remove('show');
-    feedbackEl.className = 'feedback';
-    inputEl.value = '';
-    inputEl.style.backgroundColor = '';
-    inputEl.style.borderColor = '#ff6b6b';
-    progressBarEl.style.width = '0%';
-    timeLeft = 21; // también aquí
-    timerTextEl.textContent = timeLeft;
-    timerProgressEl.style.strokeDashoffset = '0';
-
-    const available = window.frasesApp.phrases.filter(p => !completedSet.has(p.spanish));
-
-    if (available.length === 0) {
-        spanishPhraseEl.textContent = "¡Has completado todas las frases!";
-        englishPhraseEl.textContent = "";
-        inputEl.disabled = true;
-        return;
-    }
-
-    currentPhrase = available[Math.floor(Math.random() * available.length)];
-    spanishPhraseEl.textContent = currentPhrase.spanish;
-    englishPhraseEl.textContent = currentPhrase.english;
-
-    showEnglishTimeout = setTimeout(() => {
-        englishPhraseEl.classList.add('show');
-    }, 7000);
-}
-
-function updateTimer() {
-    timeLeft--;
-    timerTextEl.textContent = timeLeft;
-    nextPhraseTimerEl.textContent = `${timeLeft}s`;
-
-    const offset = 283 - (283 * (21 - timeLeft) / 21); // actualizado a 21
-    timerProgressEl.style.strokeDashoffset = offset;
-
-    if (timeLeft <= 0) {
-        completedCount++;
-        updateStats();
-        loadNextPhrase();
-    }
-}
-
-function updateStats() {
-    completedCountEl.textContent = completedCount;
-    const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
-    accuracyEl.textContent = `${accuracy}%`;
-}
-
-inputEl.addEventListener('input', function () {
-    const userInput = this.value;
-    const progress = (userInput.length / currentPhrase.english.length) * 100;
-    progressBarEl.style.width = `${Math.min(progress, 100)}%`;
-
-    const normalizedInput = normalize(userInput);
-    const normalizedPhrase = normalize(currentPhrase.english);
-
-    if (normalizedInput === normalizedPhrase) {
-        this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
-        this.style.borderColor = '#4CAF50';
-        feedbackEl.textContent = '¡Correcto!';
-        feedbackEl.className = 'feedback correct';
-        progressBarEl.style.background = '#4CAF50';
-
-        if (!completedSet.has(currentPhrase.spanish)) {
-            completedSet.add(currentPhrase.spanish);
-            saveCompletedSet(completedSet);
-            completedCount++;
-            correctCount++;
+        // Function to get the completed phrases set from localStorage
+        function getCompletedSet() {
+            const saved = localStorage.getItem('completedPhrases_english'); // Changed key to avoid conflicts
+            return saved ? new Set(JSON.parse(saved)) : new Set();
         }
 
-        updateStats();
+        // Function to save the completed phrases set to localStorage
+        function saveCompletedSet(set) {
+            localStorage.setItem('completedPhrases_english', JSON.stringify(Array.from(set)));
+        }
 
-        setTimeout(() => {
+        const completedSet = getCompletedSet();
+
+        function init() {
+            // **Crucial Change Here:** Check for window.frasesApp and its phrases property
+            if (typeof window.frasesApp === 'undefined' || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
+                console.error("Error: No se encontraron frases. Asegúrate de que 'traduc.js' esté cargado y contenga el objeto 'window.frasesApp' con el array 'phrases'.");
+                spanishPhraseEl.textContent = "Error al cargar las frases.";
+                inputEl.disabled = true; // Disable input if no phrases are loaded
+                return;
+            }
+
+            completedCount = completedSet.size;
+            correctCount = completedSet.size; // This assumes all saved phrases are correct
+
             loadNextPhrase();
-        }, 1900);
-    } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
-        this.style.borderColor = '#ffcc00';
-        progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
-    } else if (userInput !== '') {
-        this.style.borderColor = '#f44336';
-        progressBarEl.style.background = '#f44336';
-    } else {
-        this.style.borderColor = '#ff6b6b';
-        progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
-    }
-});
+            inputEl.focus();
+            timerInterval = setInterval(updateTimer, 1000);
+            updateStats();
+        }
 
-window.addEventListener('DOMContentLoaded', init);
+        function loadNextPhrase() {
+            clearTimeout(showEnglishTimeout);
+            englishPhraseEl.classList.remove('show');
+            feedbackEl.className = 'feedback';
+            inputEl.value = '';
+            inputEl.style.backgroundColor = '';
+            inputEl.style.borderColor = '#ff6b6b';
+            progressBarEl.style.width = '0%';
+            timeLeft = 21; // Reset time for the new phrase
+            timerTextEl.textContent = timeLeft;
+            timerProgressEl.style.strokeDashoffset = '0';
 
-function normalize(text) {
-    
+            // Filter phrases that are NOT in the completed set, using window.frasesApp.phrases
+            const available = window.frasesApp.phrases.filter(p => !completedSet.has(p.spanish));
 
-    return text
-        .toLowerCase()
-        .replace(/[\.,!?]/g, '')
-        .replace(/\s+/g, ' ')
-        .split(' ')
-        .map(word => contractions[word] || word)
-        .join(' ')
-        .replace(/takeoff/g, 'take off')  // tu regla personalizada
-        .replace(/take off/g, 'takeoff')  // tu regla personalizada
-        .trim();
-}
-</script> 
-    
+            if (available.length === 0) {
+                spanishPhraseEl.textContent = "¡Has completado todas las frases! 🎉";
+                englishPhraseEl.textContent = "";
+                inputEl.disabled = true;
+                clearInterval(timerInterval); // Stop the timer
+                return;
+            }
+
+            currentPhrase = available[Math.floor(Math.random() * available.length)];
+            spanishPhraseEl.textContent = currentPhrase.spanish;
+            englishPhraseEl.textContent = currentPhrase.english;
+
+            showEnglishTimeout = setTimeout(() => {
+                englishPhraseEl.classList.add('show');
+            }, 7000); // Show translation after 7 seconds
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            timerTextEl.textContent = timeLeft;
+            nextPhraseTimerEl.textContent = `${timeLeft}s`;
+
+            const circumference = 2 * Math.PI * 45; // 2 * PI * radius (radius is 45)
+            const offset = circumference - (circumference * timeLeft / 21); // Calculate offset for progress
+            timerProgressEl.style.strokeDashoffset = offset;
+
+            if (timeLeft <= 0) {
+                // If time runs out, it's considered a failed attempt (or not answered)
+                completedCount++; // Increment as an "attempted" phrase
+                updateStats();
+                loadNextPhrase(); // Load the next phrase
+            }
+        }
+
+        function updateStats() {
+            completedCountEl.textContent = completedCount;
+            const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
+            accuracyEl.textContent = `${accuracy}%`;
+        }
+
+        inputEl.addEventListener('input', function () {
+            const userInput = this.value;
+            const progress = (userInput.length / currentPhrase.english.length) * 100;
+            progressBarEl.style.width = `${Math.min(progress, 100)}%`;
+
+            // Normalize both strings before comparison
+            const normalizedInput = normalize(userInput);
+            const normalizedPhrase = normalize(currentPhrase.english);
+
+            if (normalizedInput === normalizedPhrase) {
+                this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
+                this.style.borderColor = '#4CAF50';
+                feedbackEl.textContent = '¡Correcto! ✅';
+                feedbackEl.className = 'feedback correct';
+                progressBarEl.style.background = '#4CAF50';
+
+                // Only add to completedSet and increment correctCount if it's the first time it's completed
+                if (!completedSet.has(currentPhrase.spanish)) {
+                    completedSet.add(currentPhrase.spanish);
+                    saveCompletedSet(completedSet);
+                    completedCount++; // Increment attempted phrases
+                    correctCount++;   // Increment correct phrases
+                }
+                
+                updateStats();
+
+                setTimeout(() => {
+                    loadNextPhrase();
+                }, 1000); // Slightly less delay for the next one
+            } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
+                this.style.borderColor = '#ffcc00'; // Yellow/orange for progress
+                progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
+                feedbackEl.className = 'feedback'; // Clear feedback if it's a partial match
+                feedbackEl.textContent = '';
+            } else if (userInput.length > 0) { // If something is typed and it doesn't match or doesn't start with
+                this.style.borderColor = '#f44336'; // Red if incorrect or doesn't match at the beginning
+                feedbackEl.textContent = 'Incorrecto ❌';
+                feedbackEl.className = 'feedback incorrect';
+                progressBarEl.style.background = '#f44336';
+            } else { // If input is empty
+                this.style.borderColor = '#ff6b6b';
+                feedbackEl.className = 'feedback'; // Clear feedback
+                feedbackEl.textContent = '';
+                progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', init);
+
+        // Crucial normalization function
+        function normalize(text) {
+            // **Crucial Change Here:** Use window.frasesApp.contractions
+            const contractions = window.frasesApp.contractions || {}; // Fallback if contractions isn't defined
+
+            // 1. Convert to lowercase
+            let normalized = text.toLowerCase();
+
+            // 2. Replace all apostrophes (curly and straight) with a standard one (straight)
+            normalized = normalized.replace(/[‘’“”]/g, "'");
+
+            // 3. Remove punctuation marks except apostrophes (for contractions)
+            normalized = normalized.replace(/[.,!?;:()]/g, '');
+
+            // 4. Replace multiple spaces with a single space and trim (remove leading/trailing spaces)
+            normalized = normalized.replace(/\s+/g, ' ').trim();
+            
+            // 5. Expand contractions. This must be done *after* cleaning punctuation and normalizing apostrophes.
+            const words = normalized.split(' ');
+            const expandedWords = words.map(word => {
+                return contractions[word] || word;
+            });
+            normalized = expandedWords.join(' ');
+
+            // 6. Apply your custom replacement rules, like 'take off' vs 'takeoff'
+            normalized = normalized.replace(/takeoff/g, 'take off'); 
+
+            return normalized;
+        }
+    </script>
 </body>
 </html>
