@@ -1,28 +1,136 @@
-window.frasesApp = {
-    phrases: [
-        { english: "Too many cooks spoil the broth.", spanish: "Muchas manos en la olla echan a perder el caldo." },
-        { english: "You can't have your cake and eat it too.", spanish: "No se puede tener el pastel y comérselo también." },
-        { english: "That's the way the cookie crumbles.", spanish: "Así se desmorona la galleta." },
-        { english: "It's a piece of cake.", spanish: "Es pan comido." },
-        { english: "Don't cry over spilled milk.", spanish: "No llores sobre leche derramada." },
-        { english: "Bring home the bacon.", spanish: "Llevar el pan a casa." },
-        { english: "Spill the beans.", spanish: "Soltar la sopa." },
-        { english: "Take it with a grain of salt.", spanish: "Tómalo con un grano de sal." },
-        { english: "The proof is in the pudding.", spanish: "La prueba está en el pudín." },
-        { english: "Bite off more than you can chew.", spanish: "Morder más de lo que puedes masticar." },
-        { english: "In a pickle.", spanish: "En un aprieto." },
-        { english: "Cool as a cucumber.", spanish: "Fresco como una lechuga." },
-        { english: "Eat like a horse.", spanish: "Comer como un lobo." },
-        { english: "Butter someone up.", spanish: "Dar coba a alguien." },
-        { english: "The apple of my eye.", spanish: "La niña de mis ojos." },
-        { english: "The truth will set you free.", spanish: "La verdad te hará libre." },
-        { english: "To tell you the truth, I was surprised.", spanish: "A decir verdad, me sorprendió." },
-        { english: "There's some truth in what you say.", spanish: "Hay algo de verdad en lo que dices." },
-        { english: "He finally revealed the bitter truth.", spanish: "Finalmente reveló la amarga verdad." },
-        { english: "In truth, we never expected this outcome.", spanish: "En verdad, nunca esperábamos este resultado." },
-        { english: "Seek the truth and you shall find it.", spanish: "Busca la verdad y la encontrarás." },
-        { english: "Goodbye", spanish: "Adiós" },
-    { english: "See you later", spanish: "Hasta luego" },
+window.Frases = {
+  lista: [
+    
+   
+  
+
+  {
+    "english": "Review the agenda before the board meeting.",
+    "spanish": "Revisa la agenda antes de la reunión de la junta."
+  },
+  {
+    "english": "Process the invoices for accounts payable.",
+    "spanish": "Procesa las facturas para cuentas por pagar."
+  },
+  {
+    "english": "He accidentally bumped into the glass door.",
+    "spanish": "Él accidentalmente chocó contra la puerta de vidrio."
+  },
+  {
+    "english": "The caterpillar will transform into a butterfly.",
+    "spanish": "La oruga se transformará en mariposa."
+  },
+  {
+    "english": "She translated the book into three languages.",
+    "spanish": "Ella tradujo el libro a tres idiomas."
+  },
+  {
+    "english": "They broke into the old mansion at midnight.",
+    "spanish": "Ellos irrumpieron en la mansión antigua a medianoche."
+  },
+  {
+    "english": "The river flows into the ocean near here.",
+    "spanish": "El río desemboca en el océano cerca de aquí."
+  },
+  {
+    "english": "He talked himself into buying the expensive car.",
+    "spanish": "Él se convenció a sí mismo de comprar el auto caro."
+  },
+  {
+    "english": "The children jumped into the pool with excitement.",
+    "spanish": "Los niños saltaron a la piscina con emoción."
+  },
+
+  {
+    "english": "Please file these documents alphabetically.",
+    "spanish": "Por favor, archiva estos documentos alfabéticamente."
+  },
+  {
+    "english": "Submit your timesheet by Friday afternoon.",
+    "spanish": "Envía tu hoja de horas antes del viernes por la tarde."
+  },
+  {
+    "english": "Forward the client's email to the sales team.",
+    "spanish": "Reenvía el correo del cliente al equipo de ventas."
+  },
+  {
+    "english": "The meeting starts promptly at 10:00 AM.",
+    "spanish": "La reunión comienza puntualmente a las 10:00 AM."
+  },
+  {
+    "english": "Refill the printer paper when the tray is empty.",
+    "spanish": "Reemplaza el papel de la impresora cuando la bandeja esté vacía."
+  },
+  {
+    "english": "Book a conference room for the project review.",
+    "spanish": "Reserva una sala de conferencias para la revisión del proyecto."
+  },
+  {
+    "english": "She poured the milk into the cup carefully.",
+    "spanish": "Ella vertió la leche en la taza con cuidado."
+  },
+    
+  {
+    "english": "Distribute the revised policy memo to all staff.",
+    "spanish": "Distribuye el memorándum de políticas revisado a todo el personal."
+  },
+  {
+    "english": "Attend the mandatory safety training session.",
+    "spanish": "Asiste a la sesión obligatoria de capacitación en seguridad."
+  },
+  {
+    "english": "Archive the old project files in the storage room.",
+    "spanish": "Archiva los antiguos archivos del proyecto en el almacén."
+  },
+ 
+  {
+    "english": "Tidy up your workstation at the end of the day.",
+    "spanish": "Ordena tu estación de trabajo al final del día."
+  },
+  {
+    "english": "Proofread the report carefully for any errors.",
+    "spanish": "Revisa el informe cuidadosamente en busca de errores."
+  },
+  {
+    "english": "Back up your important files to the cloud.",
+    "spanish": "Haz una copia de seguridad de tus archivos importantes en la nube."
+  },
+  {
+    "english": "Place the outgoing mail in the designated bin.",
+    "spanish": "Coloca el correo saliente en la bandeja designada."
+  },
+  {
+    "english": "Coordinate the schedules for next week's interviews.",
+    "spanish": "Coordina los horarios para las entrevistas de la próxima semana."
+  },
+  {
+    "english": "Order more toner cartridges for the copier.",
+    "spanish": "Pide más cartuchos de tóner para la fotocopiadora."
+  },
+  {
+    "english": "Update the shared spreadsheet with the new data.",
+    "spanish": "Actualiza la hoja de cálculo compartida con los nuevos datos."
+  },
+  {
+    "english": "Sign the delivery slip for the office supplies.",
+    "spanish": "Firma el albarán de entrega de los suministros de oficina."
+  },
+  {
+    "english": "Report the IT issue through the help desk portal.",
+    "spanish": "Reporta el problema de TI a través del portal de soporte técnico."
+  },
+  {
+    "english": "Restock the coffee supplies in the break room.",
+    "spanish": "Repone los suministros de café en la sala de descanso."
+  },
+  {
+    "english": "Set up the video call with the remote team.",
+    "spanish": "Configura la videollamada con el equipo remoto."
+  },
+  {
+    "english": "Lock the filing cabinets before leaving for the day.",
+    "spanish": "Cierra con llave los archivadores antes de irte por hoy."
+  },
     
     { english: "The sun rises early in the morning sky.", spanish: "El sol sale temprano en el cielo matutino." },
     { english: "Children play happily in the park every afternoon.", spanish: "Los niños juegan felices en el parque cada tarde." },
@@ -35,7 +143,78 @@ window.frasesApp = {
     { english: "Adventurers discovered ancient ruins deep in the jungle.", spanish: "Aventureros descubrieron ruinas antiguas en lo profundo de la selva." },
     { english: "Music has the power to heal broken hearts.", spanish: "La música tiene el poder de sanar corazones rotos." },
     { english: "Fresh bread baking in the oven smells divine.", spanish: "El pan fresco horneándose en el horno huele divino." },
-    { english: "Stars twinkle brightly on clear summer nights above.", spanish: "Las estrellas brillan intensamente en las noches despejadas de verano." },
+
+{ english: "Pull someone's leg.", spanish: "Tomarle el pelo a alguien." },
+{ english: "Turn a blind eye.", spanish: "Hacer la vista gorda." },
+{ english: "Under the weather.", spanish: "Sentirse indispuesto." },
+{ english: "Wear many hats.", spanish: "Asumir múltiples roles." },
+{ english: "Pull someone's leg.", spanish: "Tomarle el pelo a alguien." },  
+{ english: "Turn a blind eye.", spanish: "Hacer la vista gorda." },  
+{ english: "Under the weather.", spanish: "Sentirse indispuesto." },  
+{ english: "It was the best of times, it was the worst of times.", spanish: "Era el mejor de los tiempos, era el peor de los tiempos." },  
+{ english: "To be or not to be, that is the question.", spanish: "Ser o no ser, esa es la cuestión." },  
+{ english: "All animals are equal, but some are more equal than others.", spanish: "Todos los animales son iguales, pero algunos son más iguales que otros." },  
+{ english: "So we beat on, boats against the current.", spanish: "Y así seguimos luchando, botes contra la corriente." },  
+{ english: "Stay gold, Ponyboy.", spanish: "Mantente dorado, Ponyboy." },  
+{ english: "The only way to get rid of a temptation is to yield to it.", spanish: "La única forma de librarse de una tentación es caer en ella." },  
+{ english: "Not all those who wander are lost.", spanish: "No todos los que vagan están perdidos." },  
+{ english: "I am no bird; and no net ensnares me.", spanish: "No soy un pájaro; y ninguna red me atrapa." },  
+{ english: "It is a truth universally acknowledged...", spanish: "Es una verdad universalmente reconocida..." },  
+{ english: "The answer to life, the universe, and everything is 42.", spanish: "La respuesta al universo, la vida y todo es 42." },  
+{ english: "Call me Ishmael.", spanish: "Llamadme Ismael." },  
+{ english: "In the beginning, God created the heavens and the earth.", spanish: "En el principio, Dios creó los cielos y la tierra." },  
+{ english: "It is a far, far better thing that I do...", spanish: "Es una meta mucho, mucho mejor la que persigo..." },  
+{ english: "You mustn't be afraid to dream a little bigger.", spanish: "No debes tener miedo de soñar un poco más grande." },  
+{ english: "The world is quiet here.", spanish: "El mundo está en silencio aquí." },  
+{ english: "We were somewhere around Barstow on the edge of the desert.", spanish: "Estábamos cerca de Barstow, al borde del desierto." },  
+{ english: "All happy families are alike; each unhappy family is unhappy in its own way.", spanish: "Todas las familias felices se parecen; las infelices lo son cada una a su manera." },  
+{ english: "It was a bright cold day in April, and the clocks were striking thirteen.", spanish: "Era un día frío y brillante de abril, y los relojes daban las trece." },  
+{ english: "The man in black fled across the desert, and the gunslinger followed.", spanish: "El hombre de negro huyó a través del desierto, y el pistolero lo siguió." },  
+{ english: "The past is a foreign country; they do things differently there.", spanish: "El pasado es un país extranjero; allí hacen las cosas de otro modo." },  
+{ english: "It is not down in any map; true places never are.", spanish: "No está en ningún mapa; los lugares verdaderos nunca lo están." },  
+{ english: "There is no greater agony than bearing an untold story inside you.", spanish: "No hay agonía más grande que llevar una historia no contada dentro de ti." },  
+{ english: "The sky above the port was the color of television, tuned to a dead channel.", spanish: "El cielo sobre el puerto tenía el color de una pantalla de televisor sintonizado a un canal muerto." },  
+{ english: "It was a pleasure to burn.", spanish: "Era un placer quemar." },  
+{ english: "The sun shone, having no alternative, on the nothing new.", spanish: "El sol brillaba, sin alternativa, sobre la nada nueva." },  
+{ english: "You don't know about me without you have read a book...", spanish: "No sabrías nada de mí si no hubieras leído un libro..." },  
+{ english: "The horror! The horror!", spanish: "¡El horror! ¡El horror!" },  
+{ english: "They shoot the white girl first.", spanish: "Primero disparan a la chica blanca." },  
+{ english: "Once upon a time and a very good time it was...", spanish: "Érase una vez, y un tiempo muy bueno era..." },  
+{ english: "The cold passed reluctantly from the earth.", spanish: "El frío abandonó la tierra de mala gana." },  
+{ english: "There was a boy called Eustace Clarence Scrubb, and he almost deserved it.", spanish: "Había un niño llamado Eustace Clarence Scrubb, y casi se lo merecía." },  
+{ english: "It was a dark and stormy night.", spanish: "Era una noche oscura y tormentosa." },  
+{ english: "You better not never tell nobody but God.", spanish: "Más vale que no se lo cuentes a nadie más que a Dios." },  
+{ english: "I am an invisible man.", spanish: "Soy un hombre invisible." },  
+{ english: "She might arrive late due to the heavy traffic.", spanish: "Podría llegar tarde debido al tráfico pesado." },  
+{ english: "This medicine might cause dizziness as a side effect.", spanish: "Este medicamento podría causar mareos como efecto secundario." },  
+{ english: "We might cancel the trip if it rains tomorrow.", spanish: "Podríamos cancelar el viaje si llueve mañana." },  
+{ english: "I'll call you as soon as I finish the meeting.", spanish: "Te llamaré tan pronto como termine la reunión." },  
+{ english: "I'll help you with the project if you need it.", spanish: "Te ayudaré con el proyecto si lo necesitas." },  
+{ english: "I'll decide what to wear after checking the weather.", spanish: "Decidiré qué ponerme después de revisar el clima." }, 
+{ english: "She might arrive late due to the heavy traffic.", spanish: "Podría llegar tarde debido al tráfico pesado." },  
+{ english: "This medicine might cause dizziness as a side effect.", spanish: "Este medicamento podría causar mareos como efecto secundario." },  
+{ english: "We might cancel the trip if it rains tomorrow.", spanish: "Podríamos cancelar el viaje si llueve mañana." }, 
+{ english: "We must arrive at the airport at least 2 hours before departure.", spanish: "Debemos llegar al aeropuerto al menos 2 horas antes de la salida." },
+{ english: "Passengers should check in online to save time.", spanish: "Los pasajeros deberían facturar en línea para ahorrar tiempo." },
+{ english: "All liquids must be in containers of 100ml or less.", spanish: "Todos los líquidos deben estar en envases de 100ml o menos." },
+{ english: "Boarding usually begins 45 minutes before takeoff.", spanish: "El embarque suele comenzar 45 minutos antes del despegue." },
+{ english: "Remember to keep your boarding pass accessible.", spanish: "Recuerda mantener tu tarjeta de embarque accesible." },
+{ english: "Electronic devices must be on airplane mode during flight.", spanish: "Los dispositivos electrónicos deben estar en modo avión durante el vuelo." },
+{ english: "Flight attendants will demonstrate safety procedures.", spanish: "Los auxiliares de vuelo demostrarán los procedimientos de seguridad." },
+{ english: "Turbulence is normal during flights.", spanish: "La turbulencia es normal durante los vuelos." },
+{ english: "You can request headphones for in-flight entertainment.", spanish: "Puedes solicitar audífonos para el entretenimiento a bordo." },
+{ english: "The seatbelt sign will turn on during landing.", spanish: "La señal de cinturón se encenderá durante el aterrizaje." },
+{ english: "Passengers must remain seated until the plane docks.", spanish: "Los pasajeros deben permanecer sentados hasta que el avión esté acoplado." },
+{ english: "Baggage claim is located on the lower level.", spanish: "La recogida de equipajes está ubicada en el nivel inferior." },
+{ english: "You'll need your passport for international flights.", spanish: "Necesitarás tu pasaporte para vuelos internacionales." },
+{ english: "Overhead compartments shouldn't contain heavy items.", spanish: "Los compartimentos superiores no deben contener objetos pesados." },
+{ english: "Connecting flights have minimum transfer times.", spanish: "Los vuelos de conexión tienen tiempos mínimos de transferencia." },
+{ english: "Delays may occur due to weather conditions.", spanish: "Pueden producirse retrasos debido a condiciones meteorológicas." },
+{
+    "english": "Follow up with the client about their feedback.",
+    "spanish": "Haz seguimiento con el cliente sobre sus comentarios."
+  },
+   { english: "Stars twinkle brightly on clear summer nights above.", spanish: "Las estrellas brillan intensamente en las noches despejadas de verano." },
     { english: "Traveling expands our understanding of different cultures significantly.", spanish: "Viajar amplía nuestro entendimiento de diferentes culturas significativamente." },
     { english: "Kindness costs nothing but means everything to others.", spanish: "La amabilidad no cuesta nada pero lo significa todo." },
     { english: "Books can transport you to imaginary worlds magically.", spanish: "Los libros pueden transportarte a mundos imaginarios mágicamente." },
@@ -128,56 +307,56 @@ window.frasesApp = {
     { english: "He glossed over the important details.", spanish: "Pasó por alto los detalles importantes." },  
 { english: "We need to lay off temporary workers.", spanish: "Debemos despedir a los trabajadores temporales." },  
 { english: "The idea grew on me over time.", spanish: "La idea me fue gustando con el tiempo." },  
-{ english: "They’re scaling back the marketing budget.", spanish: "Están recortando el presupuesto de marketing." },  
-{ english: "She’s dropping off the contracts at noon.", spanish: "Ella entregará los contratos al mediodía." },  
-{ english: "Let’s hash out the proposal details.", spanish: "Vamos a discutir a fondo los detalles de la propuesta." },  
+{ english: "They're scaling back the marketing budget.", spanish: "Están recortando el presupuesto de marketing." },  
+{ english: "She's dropping off the contracts at noon.", spanish: "Ella entregará los contratos al mediodía." },  
+{ english: "Let's hash out the proposal details.", spanish: "Vamos a discutir a fondo los detalles de la propuesta." },  
 { english: "He clocked out early yesterday.", spanish: "Él fichó salida temprano ayer." },  
 { english: "We should nail down the timeline.", spanish: "Deberíamos definir el cronograma." },  
 { english: "The project ate up all our resources.", spanish: "El proyecto consumió todos nuestros recursos." },  
-{ english: "She’s gearing up for the audit.", spanish: "Ella se está preparando para la auditoría." },  
+{ english: "She's gearing up for the audit.", spanish: "Ella se está preparando para la auditoría." },  
 { english: "They brought in an external consultant.", spanish: "Trajeron a un consultor externo." },  
-{ english: "Let’s knock off early today.", spanish: "Terminemos temprano hoy." },  
-{ english: "He’s stuck with endless paperwork.", spanish: "Él está atascado con papeleo interminable." },  
+{ english: "Let's knock off early today.", spanish: "Terminemos temprano hoy." },  
+{ english: "He's stuck with endless paperwork.", spanish: "Él está atascado con papeleo interminable." },  
 { english: "They phased out the legacy system.", spanish: "Eliminaron gradualmente el sistema antiguo." },  
-{ english: "She’s weighing up the job offer.", spanish: "Ella está considerando la oferta de trabajo." },  
-{ english: "We’re swamped with urgent requests.", spanish: "Estamos saturados de solicitudes urgentes." },  
+{ english: "She's weighing up the job offer.", spanish: "Ella está considerando la oferta de trabajo." },  
+{ english: "We're swamped with urgent requests.", spanish: "Estamos saturados de solicitudes urgentes." },  
 { english: "He zoned out during the presentation.", spanish: "Él desconectó durante la presentación." },  
-{ english: "Let’s pencil in a brainstorming session.", spanish: "Agendemos una lluvia de ideas." },  
-{ english: "They’re ramping up production.", spanish: "Están aumentando la producción." },  
+{ english: "Let's pencil in a brainstorming session.", spanish: "Agendemos una lluvia de ideas." },  
+{ english: "They're ramping up production.", spanish: "Están aumentando la producción." },  
 { english: "The meeting dragged on for hours.", spanish: "La reunión se alargó durante horas." },  
-{ english: "She’s sizing up the competition.", spanish: "Ella está evaluando a la competencia." },  
+{ english: "She's sizing up the competition.", spanish: "Ella está evaluando a la competencia." },  
 { english: "We fended off a hostile takeover.", spanish: "Rechazamos una adquisición hostil." },  
-{ english: "He’s angling for a promotion.", spanish: "Él está buscando conseguir un ascenso." },  
-{ english: "They’re outsourcing IT services.", spanish: "Están externalizando los servicios de TI." },  
+{ english: "He's angling for a promotion.", spanish: "Él está buscando conseguir un ascenso." },  
+{ english: "They're outsourcing IT services.", spanish: "Están externalizando los servicios de TI." },  
 { english: "The CEO signed off on the merger.", spanish: "El CEO aprobó la fusión." },  
-{ english: "Let’s touch base before the launch.", spanish: "Coordiemos antes del lanzamiento." },  
-{ english: "They’re rolling back the changes.", spanish: "Están revirtiendo los cambios." },  
-{ english: "She’s stepping in as interim manager.", spanish: "Ella asumirá como gerente interina." },  
+{ english: "Let's touch base before the launch.", spanish: "Coordiemos antes del lanzamiento." },  
+{ english: "They're rolling back the changes.", spanish: "Están revirtiendo los cambios." },  
+{ english: "She's stepping in as interim manager.", spanish: "Ella asumirá como gerente interina." },  
 { english: "We need to drum up new clients.", spanish: "Necesitamos captar nuevos clientes." },  
-{ english: "He’s burning through the budget.", spanish: "Él está agotando el presupuesto rápidamente." },  
+{ english: "He's burning through the budget.", spanish: "Él está agotando el presupuesto rápidamente." },  
 { english: "The team pulled off a miracle.", spanish: "El equipo logró un milagro." },  
-{ english: "They’re laying out the roadmap.", spanish: "Están delineando el plan de acción." },  
-{ english: "She’s bowing out of the project.", spanish: "Ella se está retirando del proyecto." },  
- 
-{ english: "They’re farming out design work.", spanish: "Están subcontratando el trabajo de diseño." },  
-{ english: "He’s gunning for a partnership.", spanish: "Él está buscando convertirse en socio." },  
-{ english: "We’re weeding out inefficiencies.", spanish: "Estamos eliminando ineficiencias." },  
+{ english: "They're laying out the roadmap.", spanish: "Están delineando el plan de acción." },  
+{ english: "She's bowing out of the project.", spanish: "Ella se está retirando del proyecto." },  
+{ english: "Let's shoot for a Q3 release.", spanish: "Apunta a un lanzamiento en el tercer trimestre." },  
+{ english: "They're farming out design work.", spanish: "Están subcontratando el trabajo de diseño." },  
+{ english: "He's gunning for a partnership.", spanish: "Él está buscando convertirse en socio." },  
+{ english: "We're weeding out inefficiencies.", spanish: "Estamos eliminando ineficiencias." },  
 { english: "The CFO signed off on expenditures.", spanish: "El CFO autorizó los gastos." },  
-{ english: "She’s taking over the negotiations.", spanish: "Ella se hará cargo de las negociaciones." },  
-{ english: "They’re winding down operations.", spanish: "Están reduciendo operaciones gradualmente." },
+{ english: "She's taking over the negotiations.", spanish: "Ella se hará cargo de las negociaciones." },  
+{ english: "They're winding down operations.", spanish: "Están reduciendo operaciones gradualmente." },
 { english: "Actions speak louder than words.", spanish: "Las acciones hablan más que las palabras." },
 { english: "The early bird catches the worm.", spanish: "Al que madruga, Dios lo ayuda." },
 { english: "A picture is worth a thousand words.", spanish: "Una imagen vale más que mil palabras." },
 { english: "When in Rome, do as the Romans do.", spanish: "Donde fueres, haz lo que vieres." },
 { english: "The grass is always greener on the other side.", spanish: "La hierba siempre es más verde al otro lado." },
-{ english: "Don’t count your chickens before they hatch.", spanish: "No cantes victoria antes de tiempo." },
-{ english: "You can’t judge a book by its cover.", spanish: "No juzgues un libro por su portada." },
+{ english: "Don't count your chickens before they hatch.", spanish: "No cantes victoria antes de tiempo." },
+{ english: "You can't judge a book by its cover.", spanish: "No juzgues un libro por su portada." },
 { english: "Better late than never.", spanish: "Más vale tarde que nunca." },
 { english: "Birds of a feather flock together.", spanish: "Dios los cría y ellos se juntan." },
 { english: "Every cloud has a silver lining.", spanish: "No hay mal que por bien no venga." },
-{ english: "Beggars can’t be choosers.", spanish: "A caballo regalado no se le mira el diente." },
+{ english: "Beggars can't be choosers.", spanish: "A caballo regalado no se le mira el diente." },
 { english: "A watched pot never boils.", spanish: "El que espera, desespera." },
-{ english: "Don’t bite the hand that feeds you.", spanish: "No muerdas la mano que te da de comer." },
+{ english: "Don't bite the hand that feeds you.", spanish: "No muerdas la mano que te da de comer." },
 { english: "Honesty is the best policy.", spanish: "La honestidad es la mejor política." },
 { english: "Practice makes perfect.", spanish: "La práctica hace al maestro." },
 { english: "Two heads are better than one.", spanish: "Dos cabezas piensan mejor que una." },
@@ -185,19 +364,40 @@ window.frasesApp = {
 { english: "No pain, no gain.", spanish: "Sin esfuerzo no hay recompensa." },
 { english: "Time is money.", spanish: "El tiempo es oro." },
 { english: "Laughter is the best medicine.", spanish: "La risa es la mejor medicina." },
+{ english: "Unaccompanied minors require special documentation.", spanish: "Los menores no acompañados requieren documentación especial." },
+{ english: "Duty-free shopping is available after security.", spanish: "Las compras libres de impuestos están disponibles después de seguridad." },
+{ english: "Priority boarding applies to first class passengers.", spanish: "El embarque prioritario aplica a pasajeros de primera clase." },
+{ english: "Luggage weight limits vary by airline.", spanish: "Los límites de peso del equipaje varían según la aerolínea." }, 
+{ english: "The end of the world is just the beginning.", spanish: "El fin del mundo es solo el principio." },
+ { "english": "Maintain a two-second distance from the vehicle ahead.", "spanish": "Mantén dos segundos de distancia del vehículo adelante." },
+  { "english": "Turn on your headlights at dusk or in rain.", "spanish": "Enciende las luces al anochecer o con lluvia." },
+  { "english": "Reduce speed when approaching pedestrian crossings.", "spanish": "Reduce la velocidad al acercarte a cruces peatonales." },
+  { "english": "Never use your phone while driving.", "spanish": "Nunca uses el teléfono mientras conduces." },
+  { "english": "Use the handbrake when parking on slopes.", "spanish": "Usa el freno de mano al estacionar en pendientes." },
+  { "english": "Check tire pressure monthly for optimal safety.", "spanish": "Verifica la presión de los neumáticos mensualmente para mayor seguridad." },
+  { "english": "Signal at least 30 meters before turning.", "spanish": "Señaliza al menos 30 metros antes de girar." },
+  { "english": "Yield to emergency vehicles with sirens on.", "spanish": "Cede el paso a vehículos de emergencia con sirenas activas." },
+  { "english": "Stop completely at stop signs, not just slow down.", "spanish": "Detente por completo en señales de alto, no solo reduzcas velocidad." },
+  { "english": "You can stay up late as long as you wake up on time tomorrow.", "spanish": "Puedes quedarte despierto hasta tarde siempre que te levantes a tiempo mañana." },
+  { "english": "I'll help you as long as you promise to try your best.", "spanish": "Te ayudaré siempre que prometas dar tu mejor esfuerzo." },
+  { "english": "This laptop works fine as long as you keep it charged.", "spanish": "Esta laptop funciona bien siempre que la mantengas cargada." },
+  { "english": "The beach is beautiful as long as it's not raining.", "spanish": "La playa es hermosa siempre que no esté lloviendo." },
+  { "english": "You'll succeed as long as you don't give up.", "spanish": "Tendrás éxito siempre que no te rindas." },
+  { "english": "As long as we're together, I'm happy.", "spanish": "Siempre que estemos juntos, soy feliz." },
+  
 { english: "Look before you leap.", spanish: "Mira antes de saltar." },
-{ english: "Don’t put all your eggs in one basket.", spanish: "No pongas todos los huevos en una sola canasta." },
+{ english: "Don't put all your eggs in one basket.", spanish: "No pongas todos los huevos en una sola canasta." },
 { english: "Too many cooks spoil the broth.", spanish: "Muchos cocineros estropean el caldo." },
-{ english: "You can’t have your cake and eat it too.", spanish: "No se puede tener todo en la vida." },
+{ english: "You can't have your cake and eat it too.", spanish: "No se puede tener todo en la vida." },
 { english: "Let sleeping dogs lie.", spanish: "Deja que el perro duerma." },
-{ english: "Rome wasn’t built in a day.", spanish: "Roma no se construyó en un día." },
+{ english: "Rome wasn't built in a day.", spanish: "Roma no se construyó en un día." },
 { english: "A penny saved is a penny earned.", spanish: "Un centavo ahorrado es un centavo ganado." },
 { english: "The squeaky wheel gets the grease.", spanish: "El que no llora, no mama." },
-{ english: "If it ain’t broke, don’t fix it.", spanish: "Si no está roto, no lo arregles." },
+{ english: "If it ain't broke, don't fix it.", spanish: "Si no está roto, no lo arregles." },
 { english: "Out of sight, out of mind.", spanish: "Ojos que no ven, corazón que no siente." },
 { english: "It takes two to tango.", spanish: "Se necesitan dos para bailar tango." },
 { english: "You reap what you sow.", spanish: "Cosechas lo que siembras." },
-{ english: "Don’t cry over spilled milk.", spanish: "No llores sobre la leche derramada." },
+{ english: "Don't cry over spilled milk.", spanish: "No llores sobre la leche derramada." },
 { english: "Jack of all trades, master of none.", spanish: "Aprendiz de todo, maestro de nada." },
 { english: "What goes around comes around.", spanish: "Todo lo que va, vuelve." },
 { english: "Kill two birds with one stone.", spanish: "Matar dos pájaros de un tiro." },
@@ -210,7 +410,7 @@ window.frasesApp = {
 { english: "Burn the midnight oil.", spanish: "Quemarse las pestañas." },
 
 { english: "Throw in the towel.", spanish: "Tirar la toalla." },
-
+{ english: "Under the weather.", spanish: "Estar indispuesto." },
 { english: "Hit the snooze button.", spanish: "Posponer la alarma." },
 { english: "Start the day on the right foot.", spanish: "Empezar el día con buen pie." },
 { english: "Miss the bus.", spanish: "Perder el autobús." },
@@ -242,91 +442,17 @@ window.frasesApp = {
 { english: "Get the ball rolling.", spanish: "Dar el primer paso." },
 { english: "Kill two birds with one stone.", spanish: "Matar dos pájaros de un tiro." },
 { english: "On the same page.", spanish: "Estar en sintonía." },
-{ english: "Pull someone's leg.", spanish: "Tomarle el pelo a alguien." },
-{ english: "Turn a blind eye.", spanish: "Hacer la vista gorda." },
-{ english: "Under the weather.", spanish: "Sentirse indispuesto." },
-{ english: "Wear many hats.", spanish: "Asumir múltiples roles." },
-{ english: "Pull someone's leg.", spanish: "Tomarle el pelo a alguien." },  
-{ english: "Turn a blind eye.", spanish: "Hacer la vista gorda." },  
-{ english: "It was the best of times, it was the worst of times.", spanish: "Era el mejor de los tiempos, era el peor de los tiempos." },  
-{ english: "To be or not to be, that is the question.", spanish: "Ser o no ser, esa es la cuestión." },  
-{ english: "All animals are equal, but some are more equal than others.", spanish: "Todos los animales son iguales, pero algunos son más iguales que otros." },  
-{ english: "So we beat on, boats against the current.", spanish: "Y así seguimos luchando, botes contra la corriente." },  
-{ english: "Stay gold, Ponyboy.", spanish: "Mantente dorado, Ponyboy." },  
-{ english: "The only way to get rid of a temptation is to yield to it.", spanish: "La única forma de librarse de una tentación es caer en ella." },  
-{ english: "Not all those who wander are lost.", spanish: "No todos los que vagan están perdidos." },  
-{ english: "I am no bird; and no net ensnares me.", spanish: "No soy un pájaro; y ninguna red me atrapa." },  
-{ english: "It is a truth universally acknowledged...", spanish: "Es una verdad universalmente reconocida..." },  
-{ english: "The answer to life, the universe, and everything is 42.", spanish: "La respuesta al universo, la vida y todo es 42." },  
-{ english: "Call me Ishmael.", spanish: "Llamadme Ismael." },  
-{ english: "In the beginning, God created the heavens and the earth.", spanish: "En el principio, Dios creó los cielos y la tierra." },  
-{ english: "It is a far, far better thing that I do...", spanish: "Es una meta mucho, mucho mejor la que persigo..." },  
-{ english: "You mustn’t be afraid to dream a little bigger.", spanish: "No debes tener miedo de soñar un poco más grande." },  
-{ english: "The world is quiet here.", spanish: "El mundo está en silencio aquí." },  
-{ english: "We were somewhere around Barstow on the edge of the desert.", spanish: "Estábamos cerca de Barstow, al borde del desierto." },  
-{ english: "All happy families are alike; each unhappy family is unhappy in its own way.", spanish: "Todas las familias felices se parecen; las infelices lo son cada una a su manera." },  
-{ english: "It was a bright cold day in April, and the clocks were striking thirteen.", spanish: "Era un día frío y brillante de abril, y los relojes daban las trece." },  
-{ english: "The man in black fled across the desert, and the gunslinger followed.", spanish: "El hombre de negro huyó a través del desierto, y el pistolero lo siguió." },  
-{ english: "The past is a foreign country; they do things differently there.", spanish: "El pasado es un país extranjero; allí hacen las cosas de otro modo." },  
-{ english: "It is not down in any map; true places never are.", spanish: "No está en ningún mapa; los lugares verdaderos nunca lo están." },  
-{ english: "There is no greater agony than bearing an untold story inside you.", spanish: "No hay agonía más grande que llevar una historia no contada dentro de ti." },  
-{ english: "The sky above the port was the color of television, tuned to a dead channel.", spanish: "El cielo sobre el puerto tenía el color de una pantalla de televisor sintonizado a un canal muerto." },  
-{ english: "It was a pleasure to burn.", spanish: "Era un placer quemar." },  
-{ english: "The sun shone, having no alternative, on the nothing new.", spanish: "El sol brillaba, sin alternativa, sobre la nada nueva." },  
-{ english: "You don’t know about me without you have read a book...", spanish: "No sabrías nada de mí si no hubieras leído un libro..." },  
-{ english: "The horror! The horror!", spanish: "¡El horror! ¡El horror!" },  
-{ english: "They shoot the white girl first.", spanish: "Primero disparan a la chica blanca." },  
-{ english: "Once upon a time and a very good time it was...", spanish: "Érase una vez, y un tiempo muy bueno era..." },  
-{ english: "The cold passed reluctantly from the earth.", spanish: "El frío abandonó la tierra de mala gana." },  
-{ english: "There was a boy called Eustace Clarence Scrubb, and he almost deserved it.", spanish: "Había un niño llamado Eustace Clarence Scrubb, y casi se lo merecía." },  
-{ english: "It was a dark and stormy night.", spanish: "Era una noche oscura y tormentosa." },  
-{ english: "You better not never tell nobody but God.", spanish: "Más vale que no se lo cuentes a nadie más que a Dios." },  
-{ english: "I am an invisible man.", spanish: "Soy un hombre invisible." },  
-{ english: "She might arrive late due to the heavy traffic.", spanish: "Podría llegar tarde debido al tráfico pesado." },  
-{ english: "This medicine might cause dizziness as a side effect.", spanish: "Este medicamento podría causar mareos como efecto secundario." },  
-{ english: "We might cancel the trip if it rains tomorrow.", spanish: "Podríamos cancelar el viaje si llueve mañana." },  
-{ english: "I'll call you as soon as I finish the meeting.", spanish: "Te llamaré tan pronto como termine la reunión." },  
-{ english: "I'll help you with the project if you need it.", spanish: "Te ayudaré con el proyecto si lo necesitas." },  
-{ english: "I'll decide what to wear after checking the weather.", spanish: "Decidiré qué ponerme después de revisar el clima." }, 
-{ english: "She might arrive late due to the heavy traffic.", spanish: "Podría llegar tarde debido al tráfico pesado." },  
-{ english: "This medicine might cause dizziness as a side effect.", spanish: "Este medicamento podría causar mareos como efecto secundario." },  
-{ english: "We might cancel the trip if it rains tomorrow.", spanish: "Podríamos cancelar el viaje si llueve mañana." }, 
-{ english: "We must arrive at the airport at least 2 hours before departure.", spanish: "Debemos llegar al aeropuerto al menos 2 horas antes de la salida." },
-{ english: "Passengers should check in online to save time.", spanish: "Los pasajeros deberían facturar en línea para ahorrar tiempo." },
-{ english: "All liquids must be in containers of 100ml or less.", spanish: "Todos los líquidos deben estar en envases de 100ml o menos." },
-{ english: "Boarding usually begins 45 minutes before takeoff.", spanish: "El embarque suele comenzar 45 minutos antes del despegue." },
-{ english: "Remember to keep your boarding pass accessible.", spanish: "Recuerda mantener tu tarjeta de embarque accesible." },
-{ english: "Electronic devices must be on airplane mode during flight.", spanish: "Los dispositivos electrónicos deben estar en modo avión durante el vuelo." },
-{ english: "Flight attendants will demonstrate safety procedures.", spanish: "Los auxiliares de vuelo demostrarán los procedimientos de seguridad." },
-{ english: "Turbulence is normal during flights.", spanish: "La turbulencia es normal durante los vuelos." },
-{ english: "You can request headphones for in-flight entertainment.", spanish: "Puedes solicitar audífonos para el entretenimiento a bordo." },
-{ english: "The seatbelt sign will turn on during landing.", spanish: "La señal de cinturón se encenderá durante el aterrizaje." },
-{ english: "Passengers must remain seated until the plane docks.", spanish: "Los pasajeros deben permanecer sentados hasta que el avión esté acoplado." },
-{ english: "Baggage claim is located on the lower level.", spanish: "La recogida de equipajes está ubicada en el nivel inferior." },
-{ english: "You'll need your passport for international flights.", spanish: "Necesitarás tu pasaporte para vuelos internacionales." },
-{ english: "Overhead compartments shouldn't contain heavy items.", spanish: "Los compartimentos superiores no deben contener objetos pesados." },
-{ english: "Connecting flights have minimum transfer times.", spanish: "Los vuelos de conexión tienen tiempos mínimos de transferencia." },
-{ english: "Delays may occur due to weather conditions.", spanish: "Pueden producirse retrasos debido a condiciones meteorológicas." },
-{ english: "Unaccompanied minors require special documentation.", spanish: "Los menores no acompañados requieren documentación especial." },
-{ english: "Duty-free shopping is available after security.", spanish: "Las compras libres de impuestos están disponibles después de seguridad." },
-{ english: "Priority boarding applies to first class passengers.", spanish: "El embarque prioritario aplica a pasajeros de primera clase." },
-{ english: "Luggage weight limits vary by airline.", spanish: "Los límites de peso del equipaje varían según la aerolínea." }, 
-{ english: "The end of the world is just the beginning.", spanish: "El fin del mundo es solo el principio." },
- { "english": "Maintain a two-second distance from the vehicle ahead.", "spanish": "Mantén dos segundos de distancia del vehículo adelante." },
-  { "english": "Turn on your headlights at dusk or in rain.", "spanish": "Enciende las luces al anochecer o con lluvia." },
-  { "english": "Reduce speed when approaching pedestrian crossings.", "spanish": "Reduce la velocidad al acercarte a cruces peatonales." },
-  { "english": "Never use your phone while driving.", "spanish": "Nunca uses el teléfono mientras conduces." },
-  { "english": "Use the handbrake when parking on slopes.", "spanish": "Usa el freno de mano al estacionar en pendientes." },
-  { "english": "Check tire pressure monthly for optimal safety.", "spanish": "Verifica la presión de los neumáticos mensualmente para mayor seguridad." },
-  { "english": "Signal at least 30 meters before turning.", "spanish": "Señaliza al menos 30 metros antes de girar." },
-  { "english": "Yield to emergency vehicles with sirens on.", "spanish": "Cede el paso a vehículos de emergencia con sirenas activas." },
-  { "english": "Stop completely at stop signs, not just slow down.", "spanish": "Detente por completo en señales de alto, no solo reduzcas velocidad." },
-  { "english": "You can stay up late as long as you wake up on time tomorrow.", "spanish": "Puedes quedarte despierto hasta tarde siempre que te levantes a tiempo mañana." },
-  { "english": "I'll help you as long as you promise to try your best.", "spanish": "Te ayudaré siempre que prometas dar tu mejor esfuerzo." },
-  { "english": "This laptop works fine as long as you keep it charged.", "spanish": "Esta laptop funciona bien siempre que la mantengas cargada." },
-  { "english": "The beach is beautiful as long as it's not raining.", "spanish": "La playa es hermosa siempre que no esté lloviendo." },
-  { "english": "You'll succeed as long as you don't give up.", "spanish": "Tendrás éxito siempre que no te rindas." },
-  { "english": "As long as we're together, I'm happy.", "spanish": "Siempre que estemos juntos, soy feliz." },
+ { english: "Goodbye", spanish: "Adiós" },
+    { english: "See you later", spanish: "Hasta luego" },
+     {
+    "english": "The magician turned the rabbit into a dove.",
+    "spanish": "El mago transformó el conejo en una paloma."
+  },
+  {
+    "english": "We need to look into this problem immediately.",
+    "spanish": "Necesitamos investigar este problema inmediatamente."
+  },
+  
   { "english": "The soup tastes good as long as you add enough salt.", "spanish": "La sopa sabe bien siempre que le agregues suficiente sal." },
   { "english": "Kids can play here as long as they're supervised.", "spanish": "Los niños pueden jugar aquí siempre que estén supervisados." },
   { "english": "As long as I have my coffee, I can start working.", "spanish": "Siempre que tenga mi café, puedo empezar a trabajar." },
@@ -347,73 +473,22 @@ window.frasesApp = {
 { "english": "His humility despite his success is admirable.", "spanish": "Su humildad a pesar de su éxito es admirable." },
 { "english": "Learn to speak with humility and respect.", "spanish": "Aprende a hablar con humildad y respeto." },
 
+  {
+    "english": "Sign the contract on the highlighted lines.",
+    "spanish": "Firma el contrato en las líneas resaltadas."
+  }
+
+
+
+
+
+
   
-  {
-    "english": "She poured the milk into the cup carefully.",
-    "spanish": "Ella vertió la leche en la taza con cuidado."
-  },
-  {
-    "english": "The magician turned the rabbit into a dove.",
-    "spanish": "El mago transformó el conejo en una paloma."
-  },
-  {
-    "english": "We need to look into this problem immediately.",
-    "spanish": "Necesitamos investigar este problema inmediatamente."
-  },
-  {
-    "english": "He accidentally bumped into the glass door.",
-    "spanish": "Él accidentalmente chocó contra la puerta de vidrio."
-  },
-  {
-    "english": "The caterpillar will transform into a butterfly.",
-    "spanish": "La oruga se transformará en mariposa."
-  },
-  {
-    "english": "She translated the book into three languages.",
-    "spanish": "Ella tradujo el libro a tres idiomas."
-  },
-  {
-    "english": "They broke into the old mansion at midnight.",
-    "spanish": "Ellos irrumpieron en la mansión antigua a medianoche."
-  },
-  {
-    "english": "The river flows into the ocean near here.",
-    "spanish": "El río desemboca en el océano cerca de aquí."
-  },
-  {
-    "english": "He talked himself into buying the expensive car.",
-    "spanish": "Él se convenció a sí mismo de comprar el auto caro."
-  },
-  {
-    "english": "The children jumped into the pool with excitement.",
-    "spanish": "Los niños saltaron a la piscina con emoción."
-  },
+  ],
 
 
-{ english: "The truth will set you free.", spanish: "La verdad te hará libre." },
-{ english: "To tell you the truth, I was surprised.", spanish: "A decir verdad, me sorprendió." },
-{ english: "There's some truth in what you say.", spanish: "Hay algo de verdad en lo que dices." },
-{ english: "He finally revealed the bitter truth.", spanish: "Finalmente reveló la amarga verdad." },
-{ english: "In truth, we never expected this outcome.", spanish: "En verdad, nunca esperábamos este resultado." },
-{ english: "Seek the truth and you shall find it.", spanish: "Busca la verdad y la encontrarás." },
-{ english: "Too many cooks spoil the broth.", spanish: "Muchas manos en la olla echan a perder el caldo." },
-{ english: "You can't have your cake and eat it too.", spanish: "No se puede tener el pastel y comérselo también." },
-{ english: "That's the way the cookie crumbles.", spanish: "Así se desmorona la galleta." },
-{ english: "It's a piece of cake.", spanish: "Es pan comido." },
-{ english: "Don't cry over spilled milk.", spanish: "No llores sobre leche derramada." },
-{ english: "Bring home the bacon.", spanish: "Llevar el pan a casa." },
-{ english: "Spill the beans.", spanish: "Soltar la sopa." },
-{ english: "Take it with a grain of salt.", spanish: "Tómalo con un grano de sal." },
-{ english: "The proof is in the pudding.", spanish: "La prueba está en el pudín." },
-{ english: "Bite off more than you can chew.", spanish: "Morder más de lo que puedes masticar." },
-{ english: "In a pickle.", spanish: "En un aprieto." },
-{ english: "Cool as a cucumber.", spanish: "Fresco como una lechuga." },
-{ english: "Eat like a horse.", spanish: "Comer como un lobo." },
-{ english: "Butter someone up.", spanish: "Dar coba a alguien." },
-{ english: "The apple of my eye.", spanish: "La niña de mis ojos." }
-    ],
-
-    obtenerAleatoria: function() {
-        return this.phrases[Math.floor(Math.random() * this.phrases.length)];
-    }
+  
+  obtenerAleatoria: function() {
+    return this.lista[Math.floor(Math.random() * this.lista.length)];
+  }
 };
