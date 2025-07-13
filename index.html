@@ -5,7 +5,6 @@
     <title>Práctica de Traducción Español-Inglés</title>
     <script src="traduc.js"></script>
     <style>
-        /* Your CSS styles here */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -91,8 +90,11 @@
             margin: 30px 0;
         }
         
+        /* CAMBIOS CLAVE AQUÍ (TEXTAREA) */
         #translation-input {
-            width: 100%;
+            width: 95%;
+            min-height: 50px;
+            max-height: 200px;
             padding: 18px 25px;
             font-size: 1.8rem;
             text-align: center;
@@ -103,6 +105,13 @@
             font-weight: 500;
             transition: all 0.3s ease;
             outline: none;
+            resize: vertical;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.4;
+            margin: 0 auto;
+            display: block;
         }
         
         #translation-input:focus {
@@ -117,11 +126,11 @@
         }
         
         .progress-container {
-            width: 100%;
+            width: 95%;
             height: 8px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
-            margin-top: 15px;
+            margin: 15px auto 0;
             overflow: hidden;
         }
         
@@ -314,10 +323,11 @@
         
         <div class="feedback" id="feedback"></div>
         
+        <!-- CAMBIO AQUÍ: USAR TEXTAREA EN VEZ DE INPUT -->
         <div class="input-container">
-            <input type="text" id="translation-input" 
+            <textarea id="translation-input" 
                    placeholder="Escribe la traducción en inglés aquí..." 
-                   autocomplete="off">
+                   autocomplete="off"></textarea>
             <div class="progress-container">
                 <div id="progress-bar"></div>
             </div>
@@ -376,7 +386,7 @@
 
         // Function to get the completed phrases set from localStorage
         function getCompletedSet() {
-            const saved = localStorage.getItem('completedPhrases_english'); // Changed key to avoid conflicts
+            const saved = localStorage.getItem('completedPhrases_english');
             return saved ? new Set(JSON.parse(saved)) : new Set();
         }
 
@@ -388,16 +398,15 @@
         const completedSet = getCompletedSet();
 
         function init() {
-            // **Crucial Change Here:** Check for window.frasesApp and its phrases property
             if (typeof window.frasesApp === 'undefined' || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
-                console.error("Error: No se encontraron frases. Asegúrate de que 'traduc.js' esté cargado y contenga el objeto 'window.frasesApp' con el array 'phrases'.");
+                console.error("Error: No se encontraron frases.");
                 spanishPhraseEl.textContent = "Error al cargar las frases.";
-                inputEl.disabled = true; // Disable input if no phrases are loaded
+                inputEl.disabled = true;
                 return;
             }
 
             completedCount = completedSet.size;
-            correctCount = completedSet.size; // This assumes all saved phrases are correct
+            correctCount = completedSet.size;
 
             loadNextPhrase();
             inputEl.focus();
@@ -412,19 +421,19 @@
             inputEl.value = '';
             inputEl.style.backgroundColor = '';
             inputEl.style.borderColor = '#ff6b6b';
+            inputEl.style.height = '50px'; // Reset altura
             progressBarEl.style.width = '0%';
-            timeLeft = 21; // Reset time for the new phrase
+            timeLeft = 21;
             timerTextEl.textContent = timeLeft;
             timerProgressEl.style.strokeDashoffset = '0';
 
-            // Filter phrases that are NOT in the completed set, using window.frasesApp.phrases
             const available = window.frasesApp.phrases.filter(p => !completedSet.has(p.spanish));
 
             if (available.length === 0) {
                 spanishPhraseEl.textContent = "¡Has completado todas las frases! 🎉";
                 englishPhraseEl.textContent = "";
                 inputEl.disabled = true;
-                clearInterval(timerInterval); // Stop the timer
+                clearInterval(timerInterval);
                 return;
             }
 
@@ -434,7 +443,7 @@
 
             showEnglishTimeout = setTimeout(() => {
                 englishPhraseEl.classList.add('show');
-            }, 7000); // Show translation after 7 seconds
+            }, 7000);
         }
 
         function updateTimer() {
@@ -442,15 +451,14 @@
             timerTextEl.textContent = timeLeft;
             nextPhraseTimerEl.textContent = `${timeLeft}s`;
 
-            const circumference = 2 * Math.PI * 45; // 2 * PI * radius (radius is 45)
-            const offset = circumference - (circumference * timeLeft / 21); // Calculate offset for progress
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (circumference * timeLeft / 21);
             timerProgressEl.style.strokeDashoffset = offset;
 
             if (timeLeft <= 0) {
-                // If time runs out, it's considered a failed attempt (or not answered)
-                completedCount++; // Increment as an "attempted" phrase
+                completedCount++;
                 updateStats();
-                loadNextPhrase(); // Load the next phrase
+                loadNextPhrase();
             }
         }
 
@@ -460,7 +468,12 @@
             accuracyEl.textContent = `${accuracy}%`;
         }
 
+        // EVENT LISTENER MODIFICADO (CON AUTO-AJUSTE DE ALTURA)
         inputEl.addEventListener('input', function () {
+            // Autoajuste de altura
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 200) + 'px'; // Máximo 200px
+
             const userInput = this.value;
             const progress = (userInput.length / currentPhrase.english.length) * 100;
             progressBarEl.style.width = `${Math.min(progress, 100)}%`;
@@ -476,32 +489,31 @@
                 feedbackEl.className = 'feedback correct';
                 progressBarEl.style.background = '#4CAF50';
 
-                // Only add to completedSet and increment correctCount if it's the first time it's completed
                 if (!completedSet.has(currentPhrase.spanish)) {
                     completedSet.add(currentPhrase.spanish);
                     saveCompletedSet(completedSet);
-                    completedCount++; // Increment attempted phrases
-                    correctCount++;   // Increment correct phrases
+                    completedCount++;
+                    correctCount++;
                 }
                 
                 updateStats();
 
                 setTimeout(() => {
                     loadNextPhrase();
-                }, 1000); // Slightly less delay for the next one
+                }, 1000);
             } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
-                this.style.borderColor = '#ffcc00'; // Yellow/orange for progress
+                this.style.borderColor = '#ffcc00';
                 progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
-                feedbackEl.className = 'feedback'; // Clear feedback if it's a partial match
+                feedbackEl.className = 'feedback';
                 feedbackEl.textContent = '';
-            } else if (userInput.length > 0) { // If something is typed and it doesn't match or doesn't start with
-                this.style.borderColor = '#f44336'; // Red if incorrect or doesn't match at the beginning
+            } else if (userInput.length > 0) {
+                this.style.borderColor = '#f44336';
                 feedbackEl.textContent = 'Incorrecto ❌';
                 feedbackEl.className = 'feedback incorrect';
                 progressBarEl.style.background = '#f44336';
-            } else { // If input is empty
+            } else {
                 this.style.borderColor = '#ff6b6b';
-                feedbackEl.className = 'feedback'; // Clear feedback
+                feedbackEl.className = 'feedback';
                 feedbackEl.textContent = '';
                 progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
             }
@@ -509,33 +521,20 @@
 
         window.addEventListener('DOMContentLoaded', init);
 
-        // Crucial normalization function
         function normalize(text) {
-            // **Crucial Change Here:** Use window.frasesApp.contractions
-            const contractions = window.frasesApp.contractions || {}; // Fallback if contractions isn't defined
-
-            // 1. Convert to lowercase
+            const contractions = window.frasesApp.contractions || {};
             let normalized = text.toLowerCase();
-
-            // 2. Replace all apostrophes (curly and straight) with a standard one (straight)
             normalized = normalized.replace(/[‘’“”]/g, "'");
-
-            // 3. Remove punctuation marks except apostrophes (for contractions)
             normalized = normalized.replace(/[.,!?;:()]/g, '');
-
-            // 4. Replace multiple spaces with a single space and trim (remove leading/trailing spaces)
             normalized = normalized.replace(/\s+/g, ' ').trim();
             
-            // 5. Expand contractions. This must be done *after* cleaning punctuation and normalizing apostrophes.
             const words = normalized.split(' ');
             const expandedWords = words.map(word => {
                 return contractions[word] || word;
             });
             normalized = expandedWords.join(' ');
 
-            // 6. Apply your custom replacement rules, like 'take off' vs 'takeoff'
-            normalized = normalized.replace(/takeoff/g, 'take off'); 
-
+            normalized = normalized.replace(/takeoff/g, 'take off');
             return normalized;
         }
     </script>
