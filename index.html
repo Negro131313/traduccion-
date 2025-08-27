@@ -92,27 +92,27 @@
         
         /* CAMBIOS CLAVE AQUÍ (TEXTAREA) */
         #translation-input {
-            width: 95%;
-            min-height: 50px;
-            max-height: 200px;
-            padding: 18px 25px;
-            font-size: 1.8rem;
-            text-align: center;
-            border: 3px solid #ff6b6b;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            outline: none;
-            resize: vertical;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            line-height: 1.4;
-            margin: 0 auto;
-            display: block;
-        }
+    width: 95%;
+    height: 120px;   /* <-- altura inicial fija */
+    min-height: 120px;
+    max-height: 200px;
+    padding: 18px 25px;
+    font-size: 1.8rem;
+    text-align: center;
+    border: 3px solid #ff6b6b;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    font-weight: 500;
+    outline: none;
+    resize: vertical;   /* puedes dejarlo para que el usuario cambie el tamaño manualmente */
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.4;
+    margin: 0 auto;
+    display: block;
+}
         
         #translation-input:focus {
             border-color: #4CAF50;
