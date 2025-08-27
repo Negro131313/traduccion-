@@ -355,7 +355,7 @@
             </div>
             <div class="stat-box">
                 <span class="stat-label">Tiempo Restante</span>
-                <span class="stat-value" id="next-phrase-timer">21s</span>
+                <span class="stat-value" id="next-phrase-timer">23s</span>
             </div>
         </div>
         
@@ -382,7 +382,7 @@
         let showEnglishTimeout;
         let completedCount = 0;
         let correctCount = 0;
-        let timeLeft = 21; // Tiempo inicial en segundos
+        let timeLeft = 23; // Tiempo inicial en segundos
 
         // Function to get the completed phrases set from localStorage
         function getCompletedSet() {
@@ -423,7 +423,7 @@
             inputEl.style.borderColor = '#ff6b6b';
             inputEl.style.height = '50px'; // Reset altura
             progressBarEl.style.width = '0%';
-            timeLeft = 21;
+            timeLeft = 23;
             timerTextEl.textContent = timeLeft;
             timerProgressEl.style.strokeDashoffset = '0';
 
@@ -452,7 +452,7 @@
             nextPhraseTimerEl.textContent = `${timeLeft}s`;
 
             const circumference = 2 * Math.PI * 45;
-            const offset = circumference - (circumference * timeLeft / 21);
+            const offset = circumference - (circumference * timeLeft / 23);
             timerProgressEl.style.strokeDashoffset = offset;
 
             if (timeLeft <= 0) {
