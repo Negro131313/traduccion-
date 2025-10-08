@@ -1,141 +1,542 @@
-import tkinter as tk
-import pyperclip
-import re
-import time
-import threading
-import pyautogui
-from tkinter import scrolledtext
-
-# Variables globales
-ultimo_enlace = ""
-lista_enlaces = []
-procesamiento_activo = False
-detener_proceso = False
-
-def es_enlace_valido(texto):
-    patron = r'^https?://[^\s/$.?#].[^\s]*$'
-    return re.match(patron, texto) is not None
-
-def verificar_portapapeles():
-    global ultimo_enlace, lista_enlaces, procesamiento_activo
-    
-    try:
-        texto_copiado = pyperclip.paste()
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Práctica de Traducción Español-Inglés</title>
+    <script src="traduc.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         
-        if es_enlace_valido(texto_copiado) and texto_copiado not in lista_enlaces:
-            ultimo_enlace = texto_copiado
-            lista_enlaces.append(texto_copiado)
-            actualizar_interfaz()
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ffcc00;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .phrase-container {
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .spanish-phrase {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ffcc00;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .english-phrase {
+            font-size: 2rem;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            color: #4dffb8;
+            font-style: italic;
+            margin-top: 15px;
+        }
+        
+        .english-phrase.show {
+            opacity: 1;
+        }
+        
+        .input-container {
+            width: 100%;
+            margin: 30px 0;
+        }
+        
+        /* CAMBIOS CLAVE AQUÍ (TEXTAREA) */
+        #translation-input {
+    width: 95%;
+    height: 120px;   /* <-- altura inicial fija */
+    min-height: 120px;
+    max-height: 200px;
+    padding: 18px 25px;
+    font-size: 1.8rem;
+    text-align: center;
+    border: 3px solid #ff6b6b;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    font-weight: 500;
+    outline: none;
+    resize: vertical;   /* puedes dejarlo para que el usuario cambie el tamaño manualmente */
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.4;
+    margin: 0 auto;
+    display: block;
+}
+        
+        #translation-input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 5px rgba(76, 175, 80, 0.3);
+            transform: scale(1.02);
+        }
+        
+        #translation-input::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        .progress-container {
+            width: 95%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin: 15px auto 0;
+            overflow: hidden;
+        }
+        
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff6b6b, #ffcc00);
+            transition: width 0.3s ease;
+        }
+        
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .timer-circle {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+        
+        .timer-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 8;
+        }
+        
+        .timer-progress {
+            fill: none;
+            stroke: #ffcc00;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: center;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+        
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .feedback {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            height: 80px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feedback.correct {
+            color: #4CAF50;
+            opacity: 1;
+            text-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+        }
+        
+        .feedback.incorrect {
+            color: #f44336;
+            opacity: 1;
+            text-shadow: 0 0 20px rgba(244, 67, 54, 0.8);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+        
+        .instructions {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .decoration {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: 1;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .decoration:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .decoration:nth-child(2) {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+        
+        .decoration:nth-child(3) {
+            top: 20%;
+            right: 20%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 6s;
+        }
+        
+        .decoration:nth-child(4) {
+            bottom: 20%;
+            left: 20%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 9s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, 10px) rotate(2deg); }
+            50% { transform: translate(-10px, 5px) rotate(-2deg); }
+            75% { transform: translate(5px, -10px) rotate(1deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .spanish-phrase {
+                font-size: 2rem;
+            }
             
-            # Iniciar procesamiento si hay 5 enlaces
-            if len(lista_enlaces) >= 5 and not procesamiento_activo:
-                procesamiento_activo = True
-                threading.Thread(target=procesar_enlaces, daemon=True).start()
+            .english-phrase {
+                font-size: 1.6rem;
+            }
+            
+            #translation-input {
+                font-size: 1.4rem;
+                padding: 15px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .feedback {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+    <div class="decoration"></div>
+    
+    <div class="container">
+        <h1>Práctica de Traducción</h1>
+        <div class="subtitle">Español → Inglés</div>
+        
+        <div class="phrase-container">
+            <div class="spanish-phrase" id="spanish-phrase"></div>
+            <div class="english-phrase" id="english-phrase"></div>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <!-- CAMBIO AQUÍ: USAR TEXTAREA EN VEZ DE INPUT -->
+        <div class="input-container">
+            <textarea id="translation-input" 
+                   placeholder="Escribe la traducción en inglés aquí..." 
+                   autocomplete="off"></textarea>
+            <div class="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+        </div>
+        
+        <div class="timer-container">
+            <div class="timer-circle">
+                <svg viewBox="0 0 100 100">
+                    <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                    <circle class="timer-progress" cx="50" cy="50" r="45" 
+                            stroke-dasharray="283" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="timer-text" id="timer-text">15</div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <span class="stat-label">Frases Completadas</span>
+                <span class="stat-value" id="completed-count">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Precisión</span>
+                <span class="stat-value" id="accuracy">100%</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Tiempo Restante</span>
+                <span class="stat-value" id="next-phrase-timer">24s</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <p>Escribe la traducción en inglés de la frase en español mostrada arriba.</p>
+            <p>La solución en inglés aparecerá después de 7 segundos si no la has completado.</p>
+        </div>
+    </div>
+    
+    <script>
+        const spanishPhraseEl = document.getElementById('spanish-phrase');
+        const englishPhraseEl = document.getElementById('english-phrase');
+        const inputEl = document.getElementById('translation-input');
+        const feedbackEl = document.getElementById('feedback');
+        const progressBarEl = document.getElementById('progress-bar');
+        const timerTextEl = document.getElementById('timer-text');
+        const timerProgressEl = document.querySelector('.timer-progress');
+        const completedCountEl = document.getElementById('completed-count');
+        const accuracyEl = document.getElementById('accuracy');
+        const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
+
+        let currentPhrase = null;
+        let timerInterval;
+        let showEnglishTimeout;
+        let completedCount = 0;
+        let correctCount = 0;
+        let timeLeft = 24; // Tiempo inicial en segundos
+
+        // Function to get the completed phrases set from localStorage
+        function getCompletedSet() {
+            const saved = localStorage.getItem('completedPhrases_english');
+            return saved ? new Set(JSON.parse(saved)) : new Set();
+        }
+
+        // Function to save the completed phrases set to localStorage
+        function saveCompletedSet(set) {
+            localStorage.setItem('completedPhrases_english', JSON.stringify(Array.from(set)));
+        }
+
+        const completedSet = getCompletedSet();
+
+        function init() {
+            if (typeof window.frasesApp === 'undefined' || !window.frasesApp.phrases || window.frasesApp.phrases.length === 0) {
+                console.error("Error: No se encontraron frases.");
+                spanishPhraseEl.textContent = "Error al cargar las frases.";
+                inputEl.disabled = true;
+                return;
+            }
+
+            completedCount = completedSet.size;
+            correctCount = completedSet.size;
+
+            loadNextPhrase();
+            inputEl.focus();
+            timerInterval = setInterval(updateTimer, 1000);
+            updateStats();
+        }
+
+        function loadNextPhrase() {
+            clearTimeout(showEnglishTimeout);
+            englishPhraseEl.classList.remove('show');
+            feedbackEl.className = 'feedback';
+            inputEl.value = '';
+            inputEl.style.backgroundColor = '';
+            inputEl.style.borderColor = '#ff6b6b';
+            inputEl.style.height = '50px'; // Reset altura
+            progressBarEl.style.width = '0%';
+            timeLeft = 24;
+            timerTextEl.textContent = timeLeft;
+            timerProgressEl.style.strokeDashoffset = '0';
+
+            const available = window.frasesApp.phrases.filter(p => !completedSet.has(p.spanish));
+
+            if (available.length === 0) {
+                spanishPhraseEl.textContent = "¡Has completado todas las frases! 🎉";
+                englishPhraseEl.textContent = "";
+                inputEl.disabled = true;
+                clearInterval(timerInterval);
+                return;
+            }
+
+            currentPhrase = available[Math.floor(Math.random() * available.length)];
+            spanishPhraseEl.textContent = currentPhrase.spanish;
+            englishPhraseEl.textContent = currentPhrase.english;
+
+            showEnglishTimeout = setTimeout(() => {
+                englishPhraseEl.classList.add('show');
+            }, 7000);
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            timerTextEl.textContent = timeLeft;
+            nextPhraseTimerEl.textContent = `${timeLeft}s`;
+
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (circumference * timeLeft / 24);
+            timerProgressEl.style.strokeDashoffset = offset;
+
+            if (timeLeft <= 0) {
+                completedCount++;
+                updateStats();
+                loadNextPhrase();
+            }
+        }
+
+        function updateStats() {
+            completedCountEl.textContent = completedCount;
+            const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
+            accuracyEl.textContent = `${accuracy}%`;
+        }
+
+        // EVENT LISTENER MODIFICADO (CON AUTO-AJUSTE DE ALTURA)
+        inputEl.addEventListener('input', function () {
+            // Autoajuste de altura
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 200) + 'px'; // Máximo 200px
+
+            const userInput = this.value;
+            const progress = (userInput.length / currentPhrase.english.length) * 100;
+            progressBarEl.style.width = `${Math.min(progress, 100)}%`;
+
+            // Normalize both strings before comparison
+            const normalizedInput = normalize(userInput);
+            const normalizedPhrase = normalize(currentPhrase.english);
+
+            if (normalizedInput === normalizedPhrase) {
+                this.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
+                this.style.borderColor = '#4CAF50';
+                feedbackEl.textContent = '¡Correcto! ✅';
+                feedbackEl.className = 'feedback correct';
+                progressBarEl.style.background = '#4CAF50';
+
+                if (!completedSet.has(currentPhrase.spanish)) {
+                    completedSet.add(currentPhrase.spanish);
+                    saveCompletedSet(completedSet);
+                    completedCount++;
+                    correctCount++;
+                }
                 
-    except pyperclip.PyperclipException:
-        pass
-    
-    ventana.after(500, verificar_portapapeles)
+                updateStats();
 
-def actualizar_interfaz():
-    area_texto.delete(1.0, tk.END)
-    for i, enlace in enumerate(lista_enlaces, 1):
-        area_texto.insert(tk.END, f"Enlace {i}: {enlace}\n")
-    
-    area_texto.insert(tk.END, "\nEstado: ")
-    if detener_proceso:
-        area_texto.insert(tk.END, "DETENIDO (presione 'ñ' para reanudar)", "rojo")
-    elif procesamiento_activo:
-        area_texto.insert(tk.END, "PROCESANDO...", "verde")
-    else:
-        area_texto.insert(tk.END, "ESPERANDO ENLACES...")
-    
-    area_texto.see(tk.END)
+                setTimeout(() => {
+                    loadNextPhrase();
+                }, 1000);
+            } else if (normalizedPhrase.startsWith(normalizedInput) && normalizedInput !== '') {
+                this.style.borderColor = '#ffcc00';
+                progressBarEl.style.background = 'linear-gradient(90deg, #ffcc00, #ff6b6b)';
+                feedbackEl.className = 'feedback';
+                feedbackEl.textContent = '';
+            } else if (userInput.length > 0) {
+                this.style.borderColor = '#f44336';
+                feedbackEl.textContent = 'Incorrecto ❌';
+                feedbackEl.className = 'feedback incorrect';
+                progressBarEl.style.background = '#f44336';
+            } else {
+                this.style.borderColor = '#ff6b6b';
+                feedbackEl.className = 'feedback';
+                feedbackEl.textContent = '';
+                progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
+            }
+        });
 
-def procesar_enlaces():
-    global lista_enlaces, procesamiento_activo, detener_proceso
-    
-    time.sleep(2)
-    
-    for enlace in lista_enlaces[:]:  # Procesar los enlaces
-        if detener_proceso:
-            break
-        
-        try:
-            pyautogui.hotkey('ctrl', 't')
-            time.sleep(1)
-            pyautogui.write('https://ssstik.io/es')
-            pyautogui.press('enter')
-            time.sleep(3)
+        window.addEventListener('DOMContentLoaded', init);
+
+        function normalize(text) {
+            const contractions = window.frasesApp.contractions || {};
+            let normalized = text.toLowerCase();
+            normalized = normalized.replace(/[‘’“”]/g, "'");
+            normalized = normalized.replace(/[.,!?;:()]/g, '');
+            normalized = normalized.replace(/\s+/g, ' ').trim();
             
-            pyperclip.copy(enlace)
-            pyautogui.hotkey("ctrl", "v")
-            time.sleep(1)
-            pyautogui.press('enter')
-            time.sleep(2)
-            
-            pyautogui.click(1300, 732)  # Botón Descargar
-            time.sleep(2)
-            pyautogui.click(891, 764)   # Botón descarga final
-            time.sleep(3)
-            
-            pyautogui.hotkey('ctrl', 'w')
-            time.sleep(2)
-            
-        except Exception as e:
-            area_texto.insert(tk.END, f"\nERROR: {str(e)}\n", "error")
-            area_texto.see(tk.END)
-        
-        ventana.after(0, actualizar_interfaz)
-    
-    lista_enlaces.clear()
-    procesamiento_activo = False
-    detener_proceso = False
-    ventana.after(0, actualizar_interfaz)
+            const words = normalized.split(' ');
+            const expandedWords = words.map(word => {
+                return contractions[word] || word;
+            });
+            normalized = expandedWords.join(' ');
 
-def manejar_tecla(event):
-    global detener_proceso
-    if event.char == 'ñ' or event.keysym == 'ntilde':
-        detener_proceso = not detener_proceso
-        actualizar_interfaz()
-
-def limpiar_portapapeles():
-    try:
-        pyperclip.copy("")  # Vacía el portapapeles
-    except pyperclip.PyperclipException:
-        pass
-
-# --- Crear ventana principal ---
-ventana = tk.Tk()
-ventana.title("Auto Descargador de Enlaces")
-ventana.geometry("600x400")
-
-ventana.configure(bg="#f0f0f0")
-ventana.option_add("*Font", "Arial 10")
-
-area_texto = scrolledtext.ScrolledText(
-    ventana, wrap=tk.WORD, bg="white", padx=10, pady=10
-)
-area_texto.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-
-area_texto.tag_config("verde", foreground="green")
-area_texto.tag_config("rojo", foreground="red")
-area_texto.tag_config("error", foreground="darkred", background="#ffe6e6")
-
-instrucciones = "Copie enlaces válidos (se acumularán).\n"
-instrucciones += "Cuando haya 5 enlaces, se procesarán automáticamente.\n"
-instrucciones += "Presione 'ñ' para detener/reanudar el proceso."
-
-tk.Label(
-    ventana, text=instrucciones, bg="#f0f0f0",
-    justify=tk.LEFT, padx=10
-).pack(pady=(0, 5))
-
-ventana.bind('<Key>', manejar_tecla)
-
-# Limpiar portapapeles al cerrar ventana
-ventana.protocol("WM_DELETE_WINDOW", lambda: (limpiar_portapapeles(), ventana.destroy()))
-
-verificar_portapapeles()
-actualizar_interfaz()
-ventana.mainloop()
+            normalized = normalized.replace(/takeoff/g, 'take off');
+            return normalized;
+        }
+    </script>
+</body>
+</html>
