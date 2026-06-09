@@ -72,14 +72,24 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         
-        .english-phrase {
-            font-size: 2rem;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-            color: #4dffb8;
-            font-style: italic;
-            margin-top: 15px;
-        }
+.english-phrase {
+    font-size: 2rem;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    color: #4dffb8;
+    font-style: italic;
+    margin-top: 15px;
+    cursor: pointer;
+    user-select: text;
+}
+
+.english-phrase:hover::after {
+    content: " 📋 Haz clic para copiar";
+    display: block;
+    font-size: 0.8rem;
+    color: white;
+    margin-top: 5px;
+}
         
         .english-phrase.show {
             opacity: 1;
@@ -91,21 +101,21 @@
         }
         
         /* CAMBIOS CLAVE AQUÍ (TEXTAREA) */
-        #translation-input {
+ #translation-input {
     width: 95%;
-    height: 120px;   /* <-- altura inicial fija */
+    height: 120px;
     min-height: 120px;
     max-height: 200px;
     padding: 18px 25px;
-    font-size: 1.8rem;
+    font-size: 2.1rem;   /* letra más grande */
     text-align: center;
     border: 3px solid #ff6b6b;
     border-radius: 50px;
-    background: rgba(255, 255, 255, 0.95);
+    background: #fdf6e3; /* color crema tipo bloc de notas */
     color: #333;
     font-weight: 500;
     outline: none;
-    resize: vertical;   /* puedes dejarlo para que el usuario cambie el tamaño manualmente */
+    resize: vertical;
     overflow-y: auto;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -355,7 +365,7 @@
             </div>
             <div class="stat-box">
                 <span class="stat-label">Tiempo Restante</span>
-                <span class="stat-value" id="next-phrase-timer">26s</span>
+                <span class="stat-value" id="next-phrase-timer">27s</span>
             </div>
         </div>
         
@@ -366,23 +376,48 @@
     </div>
     
     <script>
-        const spanishPhraseEl = document.getElementById('spanish-phrase');
-        const englishPhraseEl = document.getElementById('english-phrase');
-        const inputEl = document.getElementById('translation-input');
-        const feedbackEl = document.getElementById('feedback');
-        const progressBarEl = document.getElementById('progress-bar');
-        const timerTextEl = document.getElementById('timer-text');
-        const timerProgressEl = document.querySelector('.timer-progress');
-        const completedCountEl = document.getElementById('completed-count');
-        const accuracyEl = document.getElementById('accuracy');
-        const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
+const spanishPhraseEl = document.getElementById('spanish-phrase');
+const englishPhraseEl = document.getElementById('english-phrase');
+const inputEl = document.getElementById('translation-input');
+const feedbackEl = document.getElementById('feedback');
+const progressBarEl = document.getElementById('progress-bar');
+const timerTextEl = document.getElementById('timer-text');
+const timerProgressEl = document.querySelector('.timer-progress');
+const completedCountEl = document.getElementById('completed-count');
+const accuracyEl = document.getElementById('accuracy');
+const nextPhraseTimerEl = document.getElementById('next-phrase-timer');
 
+englishPhraseEl.addEventListener('click', async () => {
+    if (!englishPhraseEl.textContent.trim()) return;
+
+    try {
+        await navigator.clipboard.writeText(englishPhraseEl.textContent);
+
+        const mensaje = document.createElement('div');
+        mensaje.textContent = '📋 Copiado';
+        mensaje.style.position = 'fixed';
+        mensaje.style.top = '20px';
+        mensaje.style.right = '20px';
+        mensaje.style.background = '#333';
+        mensaje.style.color = '#fff';
+        mensaje.style.padding = '10px 15px';
+        mensaje.style.borderRadius = '10px';
+        mensaje.style.zIndex = '9999';
+
+        document.body.appendChild(mensaje);
+
+        setTimeout(() => mensaje.remove(), 1500);
+
+    } catch (err) {
+        console.error(err);
+    }
+});
         let currentPhrase = null;
         let timerInterval;
         let showEnglishTimeout;
         let completedCount = 0;
         let correctCount = 0;
-        let timeLeft = 26; // Tiempo inicial en segundos
+        let timeLeft = 27; // Tiempo inicial en segundos
 
         // Function to get the completed phrases set from localStorage
         function getCompletedSet() {
@@ -423,7 +458,7 @@
             inputEl.style.borderColor = '#ff6b6b';
             inputEl.style.height = '50px'; // Reset altura
             progressBarEl.style.width = '0%';
-            timeLeft = 26;
+            timeLeft = 27;
             timerTextEl.textContent = timeLeft;
             timerProgressEl.style.strokeDashoffset = '0';
 
@@ -452,7 +487,7 @@
             nextPhraseTimerEl.textContent = `${timeLeft}s`;
 
             const circumference = 2 * Math.PI * 45;
-            const offset = circumference - (circumference * timeLeft / 26);
+            const offset = circumference - (circumference * timeLeft / 27);
             timerProgressEl.style.strokeDashoffset = offset;
 
             if (timeLeft <= 0) {
