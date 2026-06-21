@@ -5,6 +5,26 @@
     <title>Práctica de Traducción Español-Inglés</title>
     <script src="traduc.js"></script>
     <style>
+        .clear-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
         * {
             box-sizing: border-box;
             margin: 0;
@@ -102,12 +122,12 @@
         
         /* CAMBIOS CLAVE AQUÍ (TEXTAREA) */
  #translation-input {
-    width: 95%;
-    height: 120px;
-    min-height: 120px;
+    width: 99%;
+    height: 135px;
+    min-height: 155px;
     max-height: 200px;
     padding: 18px 25px;
-    font-size: 2.1rem;   /* letra más grande */
+    font-size: 2.5rem;   /* letra más grande */
     text-align: center;
     border: 3px solid #ff6b6b;
     border-radius: 50px;
@@ -323,6 +343,7 @@
     <div class="decoration"></div>
     
     <div class="container">
+        <button id="clear-btn" class="clear-btn">🧹</button>
         <h1>Práctica de Traducción</h1>
         <div class="subtitle">Español → Inglés</div>
         
@@ -356,7 +377,7 @@
         
         <div class="stats">
             <div class="stat-box">
-                <span class="stat-label">Frases Completadas</span>
+                <span class="stat-label">Frases Restantes</span>
                 <span class="stat-value" id="completed-count">0</span>
             </div>
             <div class="stat-box">
@@ -498,7 +519,8 @@ englishPhraseEl.addEventListener('click', async () => {
         }
 
         function updateStats() {
-            completedCountEl.textContent = completedCount;
+            completedCountEl.textContent =
+    window.frasesApp.phrases.length - completedSet.size;
             const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 100;
             accuracyEl.textContent = `${accuracy}%`;
         }
@@ -572,6 +594,28 @@ englishPhraseEl.addEventListener('click', async () => {
             normalized = normalized.replace(/takeoff/g, 'take off');
             return normalized;
         }
+
+        const clearBtn = document.getElementById('clear-btn');
+
+clearBtn.addEventListener('click', () => {
+    inputEl.value = '';
+
+    // Reset visuales del input
+    inputEl.style.height = '50px';
+    inputEl.style.borderColor = '#ff6b6b';
+    inputEl.style.backgroundColor = '';
+
+    // Reset progreso
+    progressBarEl.style.width = '0%';
+    progressBarEl.style.background = 'linear-gradient(90deg, #ff6b6b, #ffcc00)';
+
+    // Reset feedback
+    feedbackEl.textContent = '';
+    feedbackEl.className = 'feedback';
+
+    // Opcional: volver a enfocar el input
+    inputEl.focus();
+});
     </script>
 </body>
 </html>
